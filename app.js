@@ -4,17 +4,20 @@ import { talentCatalog } from './data/talents.js';
 import { brandCatalog } from './data/brands.js';
 import { protocolCatalog } from './data/os-protocols.js';
 import { skillChipCatalog } from './data/skill-chips.js';
+import { specializationCatalog } from './data/specializations.js';
 
 export const catalog = gearCatalog;
-export const databaseCatalog = [...gearCatalog, ...weaponCatalog, ...talentCatalog, ...brandCatalog, ...protocolCatalog, ...skillChipCatalog];
-export const slots = ['Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask', 'Primary Weapon', 'Secondary Weapon'];
+export const databaseCatalog = [...gearCatalog, ...weaponCatalog, ...talentCatalog, ...brandCatalog, ...protocolCatalog, ...skillChipCatalog, ...specializationCatalog];
+export const slots = ['Specialization', 'OS Protocol', 'Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask', 'Primary Weapon', 'Secondary Weapon'];
 
 export function filterItems(items, { category = 'All', slot = 'All', query = '' } = {}) {
   const needle = query.trim().toLowerCase();
   return items.filter(item => {
-    const itemCategory = item.type === 'Gear' ? 'Gear' : item.type === 'Weapon' ? 'Weapons' : item.type === 'Talent' ? 'Talents' : item.type === 'Brand' ? 'Brands' : item.type === 'OS Protocol' ? 'OS Protocols' : 'Skill Chips';
-    const group = item.slot ?? item.weaponClass ?? item.core;
-    const values = item.type === 'Skill Chip'
+    const itemCategory = item.type === 'Gear' ? 'Gear' : item.type === 'Weapon' ? 'Weapons' : item.type === 'Talent' ? 'Talents' : item.type === 'Brand' ? 'Brands' : item.type === 'OS Protocol' ? 'OS Protocols' : item.type === 'Skill Chip' ? 'Skill Chips' : 'Specializations';
+    const group = item.slot ?? item.weaponClass ?? item.core ?? item.type;
+    const values = item.type === 'Specialization'
+      ? [item.name, item.focusPaths, item.abilities, item.description, ...item.facts.flatMap(fact => [fact.label, fact.value])]
+      : item.type === 'Skill Chip'
       ? [item.name, item.kicker, item.description, ...item.facts.flatMap(fact => [fact.label, fact.value]), ...item.attributes.flatMap(attribute => [attribute.label, attribute.value])]
       : item.type === 'Gear'
       ? [item.name, item.slot, item.tier, ...item.brands, ...item.talents]
@@ -49,8 +52,8 @@ if (typeof document !== 'undefined') {
   const buildScore = $('#build-score');
   const buildStatus = $('#build-status');
   const slotFilter = $('#filter-slot');
-  const groups = { Gear: ['Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask'], Weapons: [...new Set(weaponCatalog.map(item => item.weaponClass))], Talents: [...new Set(talentCatalog.map(item => item.slot))], Brands: [], 'OS Protocols': [...new Set(protocolCatalog.map(item => item.core))], 'Skill Chips': [] };
-  const totals = { Gear: gearCatalog.length, Weapons: weaponCatalog.length, Talents: talentCatalog.length, Brands: brandCatalog.length, 'OS Protocols': protocolCatalog.length, 'Skill Chips': skillChipCatalog.length };
+  const groups = { Gear: ['Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask'], Weapons: [...new Set(weaponCatalog.map(item => item.weaponClass))], Talents: [...new Set(talentCatalog.map(item => item.slot))], Brands: [], 'OS Protocols': [...new Set(protocolCatalog.map(item => item.core))], 'Skill Chips': [], Specializations: [] };
+  const totals = { Gear: gearCatalog.length, Weapons: weaponCatalog.length, Talents: talentCatalog.length, Brands: brandCatalog.length, 'OS Protocols': protocolCatalog.length, 'Skill Chips': skillChipCatalog.length, Specializations: specializationCatalog.length };
 
   function renderSlotOptions() {
     slotFilter.innerHTML = ['All', ...(groups[state.category] ?? [])].map(value => `<option>${value}</option>`).join('');
@@ -60,12 +63,13 @@ if (typeof document !== 'undefined') {
   function weaponCard(item) { return `<article class="item-card"><div><p class="eyebrow"><span class="tag">${item.weaponClass}</span><span class="tag ghost">${item.damageType}</span></p><h3>${item.name}</h3><p class="tags">${item.badges.map(tag => `<span>${tag}</span>`).join('')}</p></div><div class="gear-detail"><p><small>${item.facts[0]?.label ?? '—'}</small><b>${item.facts[0]?.value ?? '—'}</b><em>${item.facts[0]?.note ?? ''}</em></p><p class="tags">${item.facts.slice(1, 3).map(fact => `<span>${fact.label}: ${fact.value}</span>`).join('')}</p></div><div class="weapon-actions"><button class="add" data-item="${item.id}" data-target="Primary Weapon">Equip primary</button><button class="add" data-item="${item.id}" data-target="Secondary Weapon">Equip secondary</button></div></article>`; }
   function talentCard(item) { return `<article class="item-card talent-card"><div><p class="eyebrow"><span class="tag">${item.slot}</span><span class="tag ghost">Talent</span></p><h3>${item.name}</h3><p class="talent-copy">${item.description || 'No primary description supplied.'}</p></div><div class="gear-detail"><p><small>ATTRIBUTE DETAILS</small><b>${item.attributes.length || 0}</b><em>tracked properties</em></p><p class="tags">${item.attributes.map(attribute => `<span>${attribute.label}: ${attribute.value}</span>`).join('') || '<span>No additional attributes</span>'}</p></div></article>`; }
   function brandCard(item) { return `<article class="item-card brand-card"><div><p class="eyebrow"><span class="tag">Brand Set</span><span class="tag ghost">Equipment</span></p><h3>${item.name}</h3><p class="talent-copy">Sourced equipment-set bonuses.</p></div><div class="gear-detail"><p><small>SET BONUSES</small><b>${item.bonuses.length}</b><em>piece thresholds</em></p><p class="tags">${item.bonuses.map(bonus => `<span>${bonus.label}: ${bonus.value}</span>`).join('')}</p></div></article>`; }
-  function protocolCard(item) { return `<article class="item-card protocol-card"><div><p class="eyebrow"><span class="tag">${item.core}</span><span class="tag ghost">OS Protocol</span></p><h3>${item.name}</h3><p class="talent-copy">${item.description || 'No primary description supplied.'}</p></div><div class="gear-detail"><p><small>ATTRIBUTE DETAILS</small><b>${item.attributes.length || 0}</b><em>tracked properties</em></p><p class="tags">${item.attributes.map(attribute => `<span>${attribute.label}: ${attribute.value}</span>`).join('') || '<span>No additional attributes</span>'}</p></div></article>`; }
+  function protocolCard(item) { return `<article class="item-card protocol-card"><div><p class="eyebrow"><span class="tag">${item.core}</span><span class="tag ghost">OS Protocol</span></p><h3>${item.name}</h3><p class="talent-copy">${item.description || 'No primary description supplied.'}</p></div><div class="gear-detail"><p><small>ATTRIBUTE DETAILS</small><b>${item.attributes.length || 0}</b><em>tracked properties</em></p><p class="tags">${item.attributes.map(attribute => `<span>${attribute.label}: ${attribute.value}</span>`).join('') || '<span>No additional attributes</span>'}</p></div><button class="add" data-item="${item.id}" data-target="OS Protocol">Equip OS protocol</button></article>`; }
+  function specializationCard(item) { return `<article class="item-card"><div><p class="eyebrow"><span class="tag">Specialization</span></p><h3>${item.name}</h3><p class="talent-copy">${item.description}</p></div><div class="gear-detail"><p><small>FOCUS PATHS</small><b>${item.focusPaths}</b><em>${item.abilities}</em></p></div><button class="add" data-item="${item.id}" data-target="Specialization">Equip specialization</button></article>`; }
   function skillChipCard(item) { return `<article class="item-card"><div><p class="eyebrow"><span class="tag">Skill Chip Set</span>${item.badges.map(badge => `<span class="tag ghost">${badge}</span>`).join('')}</p><h3>${item.name}</h3><p class="talent-copy">${item.kicker}</p></div><div class="gear-detail"><p><small>CHIP DETAILS</small><b>${item.facts.length}</b><em>sourced fields</em></p><p class="tags">${[...item.facts, ...item.lines].map(detail => `<span>${detail.label}: ${detail.value}</span>`).join('')}</p></div></article>`; }
   function renderDatabase() {
     const visible = filterItems(databaseCatalog, state);
     resultCount.textContent = `${visible.length} / ${state.category === 'All' ? databaseCatalog.length : totals[state.category]} records`;
-    items.innerHTML = visible.map(item => item.type === 'Gear' ? gearCard(item) : item.type === 'Weapon' ? weaponCard(item) : item.type === 'Talent' ? talentCard(item) : item.type === 'Brand' ? brandCard(item) : item.type === 'OS Protocol' ? protocolCard(item) : skillChipCard(item)).join('') || '<p class="empty">No equipment matches this search.</p>';
+    items.innerHTML = visible.map(item => item.type === 'Gear' ? gearCard(item) : item.type === 'Weapon' ? weaponCard(item) : item.type === 'Talent' ? talentCard(item) : item.type === 'Brand' ? brandCard(item) : item.type === 'OS Protocol' ? protocolCard(item) : item.type === 'Specialization' ? specializationCard(item) : skillChipCard(item)).join('') || '<p class="empty">No equipment matches this search.</p>';
   }
   function renderBuild() {
     const summary = calculateBuild(databaseCatalog, state.loadout);
@@ -73,11 +77,11 @@ if (typeof document !== 'undefined') {
       const item = databaseCatalog.find(entry => entry.id === state.loadout[slot]);
       const target = $(`[data-slot="${slot}"]`);
       target.classList.toggle('filled', Boolean(item));
-      const detail = item ? (item.type === 'Gear' ? `${item.tier} · ${item.fact.label}: ${item.fact.value}` : `${item.weaponClass} · ${item.facts[0]?.label}: ${item.facts[0]?.value}`) : `Choose a ${slot.toLowerCase()} from the database`;
+      const detail = item ? (item.type === 'Gear' ? `${item.tier} · ${item.fact.label}: ${item.fact.value}` : item.type === 'Weapon' ? `${item.weaponClass} · ${item.facts[0]?.label}: ${item.facts[0]?.value}` : item.type === 'OS Protocol' ? `${item.core} · OS protocol` : item.type === 'Specialization' ? item.focusPaths : item.type) : `Choose a ${slot.toLowerCase()} from the database`;
       target.innerHTML = item ? `<strong>${slot}</strong><span>${item.name}</span><small>${detail}</small>` : `<strong>${slot}</strong><span>Empty slot</span><small>${detail}</small>`;
     }
-    buildScore.textContent = `${summary.equipped.length}/8`;
-    buildStatus.textContent = summary.complete ? 'Eight-slot loadout ready' : `${summary.equipped.length} of 8 slots equipped`;
+    buildScore.textContent = `${summary.equipped.length}/${slots.length}`;
+    buildStatus.textContent = summary.complete ? 'Loadout ready' : `${summary.equipped.length} of ${slots.length} slots equipped`;
     $('#save-build').href = createBuildIssueUrl(summary.equipped);
     $('#save-build').classList.toggle('disabled', summary.equipped.length === 0);
   }

@@ -6,6 +6,7 @@ import { talentCatalog } from '../data/talents.js';
 import { brandCatalog } from '../data/brands.js';
 import { protocolCatalog } from '../data/os-protocols.js';
 import { skillChipCatalog } from '../data/skill-chips.js';
+import { specializationCatalog } from '../data/specializations.js';
 
 test('authorized SHD gear import preserves all 72 unique records', () => {
   assert.equal(catalog.length, 72);
@@ -46,7 +47,8 @@ test('authorized SHD weapon import preserves all 90 unique records and their fac
 });
 
 test('databaseCatalog combines all imported categories, with category filters', () => {
-  assert.equal(databaseCatalog.length, 351);
+  assert.equal(databaseCatalog.length, 354);
+  assert.equal(filterItems(databaseCatalog, { category: 'Specializations' }).length, 3);
   assert.equal(filterItems(databaseCatalog, { category: 'Weapons' }).length, 90);
   assert.equal(filterItems(databaseCatalog, { category: 'Talents' }).length, 120);
   assert.equal(filterItems(databaseCatalog, { category: 'Brands' }).length, 16);
@@ -82,6 +84,13 @@ test('authorized SHD skill-chip import preserves all 36 records', () => {
   assert.match(adaptive.facts[0].value, /Phalanx Shield/);
   assert.deepEqual(adaptive.badges, ['SUPERIOR', 'HIGH-END']);
   assert.equal(adaptive.lines[0].label, '3-PIECE TALENT');
+});
+
+test('authorized SHD specializations import preserves all three source records', () => {
+  assert.equal(specializationCatalog.length, 3);
+  const vanguard = specializationCatalog.find(item => item.name === 'Vanguard');
+  assert.match(vanguard.focusPaths, /Commando/);
+  assert.match(vanguard.abilities, /Tactical Link/);
 });
 
 test('createBuildIssueUrl serializes an equipped build into a GitHub Issue draft', () => {
