@@ -80,6 +80,8 @@ test('authorized SHD skill-chip import preserves all 36 records', () => {
   assert.equal(skillChipCatalog.length, 36);
   const adaptive = skillChipCatalog.find(item => item.name === 'Adaptive Armor');
   assert.match(adaptive.facts[0].value, /Phalanx Shield/);
+  assert.deepEqual(adaptive.badges, ['SUPERIOR', 'HIGH-END']);
+  assert.equal(adaptive.lines[0].label, '3-PIECE TALENT');
 });
 
 test('createBuildIssueUrl serializes an equipped build into a GitHub Issue draft', () => {
