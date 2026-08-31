@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { catalog, filterItems, calculateBuild } from '../app.js';
+import { catalog, databaseCatalog, filterItems, calculateBuild } from '../app.js';
+import { weaponCatalog } from '../data/weapons.js';
 
 test('authorized SHD gear import preserves all 72 unique records', () => {
   assert.equal(catalog.length, 72);
@@ -28,4 +29,19 @@ test('imported records retain source brands and available talents where supplied
   const item = catalog.find(entry => entry.name === 'Demeter Quick-Stash');
   assert.deepEqual(item.brands, ['Jackpot', 'Long-term Effect']);
   assert.ok(item.talents.includes('Assault Protection'));
+});
+
+test('authorized SHD weapon import preserves all 90 unique records and their facts', () => {
+  assert.equal(weaponCatalog.length, 90);
+  assert.equal(new Set(weaponCatalog.map(item => item.id)).size, 90);
+  const warlord = weaponCatalog.find(item => item.name === 'Warlord');
+  assert.equal(warlord.weaponClass, 'AR');
+  assert.equal(warlord.damageType, 'Blast');
+  assert.equal(warlord.facts[0].value, '1,179–1,179');
+  assert.ok(warlord.talents.length > 0);
+});
+
+test('databaseCatalog combines gear and weapons, with a category filter', () => {
+  assert.equal(databaseCatalog.length, 162);
+  assert.equal(filterItems(databaseCatalog, { category: 'Weapons' }).length, 90);
 });
