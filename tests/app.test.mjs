@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { catalog, databaseCatalog, filterItems, calculateBuild } from '../app.js';
 import { weaponCatalog } from '../data/weapons.js';
+import { talentCatalog } from '../data/talents.js';
 
 test('authorized SHD gear import preserves all 72 unique records', () => {
   assert.equal(catalog.length, 72);
@@ -41,7 +42,16 @@ test('authorized SHD weapon import preserves all 90 unique records and their fac
   assert.ok(warlord.talents.length > 0);
 });
 
-test('databaseCatalog combines gear and weapons, with a category filter', () => {
-  assert.equal(databaseCatalog.length, 162);
+test('databaseCatalog combines all imported categories, with category filters', () => {
+  assert.equal(databaseCatalog.length, 282);
   assert.equal(filterItems(databaseCatalog, { category: 'Weapons' }).length, 90);
+  assert.equal(filterItems(databaseCatalog, { category: 'Talents' }).length, 120);
+});
+
+test('authorized SHD talent import combines both pages into 120 unique records', () => {
+  assert.equal(talentCatalog.length, 120);
+  assert.equal(new Set(talentCatalog.map(item => item.id)).size, 120);
+  const assault = talentCatalog.find(item => item.name === 'Assault Protection');
+  assert.equal(assault.slot, 'Backpack');
+  assert.match(assault.description, /Extra Health/);
 });
