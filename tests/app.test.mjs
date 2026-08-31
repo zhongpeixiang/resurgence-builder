@@ -1,27 +1,31 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { filterItems, calculateBuild } from '../app.js';
+import { catalog, filterItems, calculateBuild } from '../app.js';
 
-const catalog = [
-  { id: 'scar', name: 'ACR-E', type: 'Assault rifle', rarity: 'High-end', score: 78, tags: ['Crit', 'Rifle'] },
-  { id: 'famas', name: 'FAMAS 2010', type: 'Assault rifle', rarity: 'High-end', score: 82, tags: ['RPM', 'Rifle'] },
-  { id: 'm870', name: 'M870', type: 'Shotgun', rarity: 'Superior', score: 61, tags: ['Close range'] }
-];
+test('authorized SHD gear import preserves all 72 unique records', () => {
+  assert.equal(catalog.length, 72);
+  assert.equal(new Set(catalog.map(item => item.id)).size, 72);
+  assert.ok(catalog.every(item => item.type === 'Gear' && item.slot && item.fact?.label && item.fact?.value));
+});
 
-test('filterItems returns records matching type and text query', () => {
+test('filterItems returns records matching a gear slot and text query', () => {
   assert.deepEqual(
-    filterItems(catalog, { type: 'Assault rifle', query: 'famas' }).map(item => item.id),
-    ['famas']
+    filterItems(catalog, { slot: 'Backpack', query: 'demeter' }).map(item => item.name),
+    ['Demeter Quick-Stash']
   );
 });
 
-test('calculateBuild totals equipped item scores and detects an incomplete loadout', () => {
-  const result = calculateBuild(catalog, { primary: 'famas', secondary: 'm870', gear: '' });
-  assert.equal(result.score, 143);
+test('calculateBuild fills the matching equipment slots without inventing a rating', () => {
+  const backpack = catalog.find(item => item.name === 'Demeter Quick-Stash');
+  const mask = catalog.find(item => item.slot === 'Mask');
+  const result = calculateBuild(catalog, { Backpack: backpack.id, Mask: mask.id });
   assert.equal(result.complete, false);
+  assert.deepEqual(result.equipped.map(item => item.id), [backpack.id, mask.id]);
+  assert.equal('score' in result, false);
 });
 
-test('calculateBuild is complete when every slot is filled', () => {
-  const result = calculateBuild(catalog, { primary: 'famas', secondary: 'm870', gear: 'scar' });
-  assert.equal(result.complete, true);
+test('imported records retain source brands and available talents where supplied', () => {
+  const item = catalog.find(entry => entry.name === 'Demeter Quick-Stash');
+  assert.deepEqual(item.brands, ['Jackpot', 'Long-term Effect']);
+  assert.ok(item.talents.includes('Assault Protection'));
 });
