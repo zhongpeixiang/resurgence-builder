@@ -1,59 +1,62 @@
-export const catalog = [
-  { id: 'famas', name: 'FAMAS 2010', type: 'Assault rifle', rarity: 'High-end', score: 82, damage: '27.4k', rpm: '900', tags: ['RPM', 'Crit'] },
-  { id: 'acr-e', name: 'ACR-E', type: 'Assault rifle', rarity: 'High-end', score: 78, damage: '35.1k', rpm: '650', tags: ['Stable', 'Crit'] },
-  { id: 'm870', name: 'M870', type: 'Shotgun', rarity: 'Superior', score: 61, damage: '180k', rpm: '85', tags: ['Close range'] },
-  { id: 'vector', name: 'Vector SBR .45', type: 'SMG', rarity: 'High-end', score: 74, damage: '21.2k', rpm: '1200', tags: ['RPM', 'Status'] },
-  { id: 'coyote', name: "Coyote's Mask", type: 'Gear', rarity: 'Exotic', score: 88, damage: '+18%', rpm: '—', tags: ['Crit', 'Group'] },
-  { id: 'striker', name: "Striker's Battlegear", type: 'Gear', rarity: 'High-end', score: 79, damage: '+15%', rpm: '—', tags: ['Weapon damage'] }
-];
+import { gearCatalog } from './data/gear.js';
 
-export function filterItems(items, { type = 'All', query = '' } = {}) {
+export const catalog = gearCatalog;
+export const slots = ['Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask'];
+
+export function filterItems(items, { slot = 'All', query = '' } = {}) {
   const needle = query.trim().toLowerCase();
-  return items.filter(item => (type === 'All' || item.type === type) &&
-    (!needle || `${item.name} ${item.type} ${item.tags.join(' ')}`.toLowerCase().includes(needle)));
+  return items.filter(item => (slot === 'All' || item.slot === slot) &&
+    (!needle || [item.name, item.slot, item.tier, ...item.brands, ...item.talents].join(' ').toLowerCase().includes(needle)));
 }
 
 export function calculateBuild(items, loadout) {
-  const equipped = Object.values(loadout).map(id => items.find(item => item.id === id)).filter(Boolean);
-  return { score: equipped.reduce((sum, item) => sum + item.score, 0), complete: Object.values(loadout).every(Boolean), equipped };
+  const equipped = slots.map(slot => items.find(item => item.id === loadout[slot])).filter(Boolean);
+  return { equipped, complete: slots.every(slot => Boolean(loadout[slot])) };
 }
 
 if (typeof document !== 'undefined') {
-  const state = { type: 'All', query: '', loadout: { primary: 'famas', secondary: 'm870', gear: 'coyote' } };
+  const state = { slot: 'All', query: '', loadout: Object.fromEntries(slots.map(slot => [slot, ''])) };
   const $ = selector => document.querySelector(selector);
   const items = $('#item-list');
   const resultCount = $('#result-count');
   const buildScore = $('#build-score');
   const buildStatus = $('#build-status');
 
-  const label = item => `<span class="tag">${item.rarity}</span><span class="tag ghost">${item.type}</span>`;
   function renderDatabase() {
     const visible = filterItems(catalog, state);
-    resultCount.textContent = `${visible.length} records`;
-    items.innerHTML = visible.map(item => `<article class="item-card"><div><p class="eyebrow">${label(item)}</p><h3>${item.name}</h3><p class="tags">${item.tags.map(tag => `<span>${tag}</span>`).join('')}</p></div><dl><div><dt>Damage</dt><dd>${item.damage}</dd></div><div><dt>RPM</dt><dd>${item.rpm}</dd></div><div><dt>Rating</dt><dd>${item.score}</dd></div></dl><button class="add" data-item="${item.id}" aria-label="Equip ${item.name}">Equip</button></article>`).join('') || '<p class="empty">No equipment matches this search.</p>';
+    resultCount.textContent = `${visible.length} / ${catalog.length} records`;
+    items.innerHTML = visible.map(item => `<article class="item-card">
+      <div><p class="eyebrow"><span class="tag">${item.slot}</span><span class="tag ghost">${item.tier}</span></p>
+      <h3>${item.name}</h3><p class="tags">${item.modSlots.map(tag => `<span>${tag}</span>`).join('')}</p></div>
+      <div class="gear-detail"><p><small>${item.fact.label}</small><b>${item.fact.value}</b><em>${item.fact.note}</em></p>
+      <p class="tags"><span>Brands: ${item.brands.join(', ') || '—'}</span><span>Talents: ${item.talents.join(', ') || '—'}</span></p></div>
+      <button class="add" data-item="${item.id}" aria-label="Equip ${item.name}">Equip ${item.slot}</button>
+    </article>`).join('') || '<p class="empty">No equipment matches this search.</p>';
   }
+
   function renderBuild() {
-    for (const [slot, id] of Object.entries(state.loadout)) {
-      const item = catalog.find(entry => entry.id === id);
-      $(`[data-slot="${slot}"]`).innerHTML = item ? `<span>${item.name}</span><small>${item.type} · ${item.score} rating</small>` : '<span>Empty slot</span><small>Select an item from the database</small>';
-    }
     const summary = calculateBuild(catalog, state.loadout);
-    buildScore.textContent = summary.score;
-    buildStatus.textContent = summary.complete ? 'Loadout ready' : 'Loadout incomplete';
+    for (const slot of slots) {
+      const item = catalog.find(entry => entry.id === state.loadout[slot]);
+      const target = $(`[data-slot="${slot}"]`);
+      target.classList.toggle('filled', Boolean(item));
+      target.innerHTML = item ? `<strong>${slot}</strong><span>${item.name}</span><small>${item.tier} · ${item.fact.label}: ${item.fact.value}</small>` : `<strong>${slot}</strong><span>Empty slot</span><small>Choose a ${slot.toLowerCase()} from the database</small>`;
+    }
+    buildScore.textContent = `${summary.equipped.length}/6`;
+    buildStatus.textContent = summary.complete ? 'Six-piece loadout ready' : `${summary.equipped.length} of 6 slots equipped`;
   }
+
   $('#search').addEventListener('input', event => { state.query = event.target.value; renderDatabase(); });
-  $('#filter-type').addEventListener('change', event => { state.type = event.target.value; renderDatabase(); });
+  $('#filter-slot').addEventListener('change', event => { state.slot = event.target.value; renderDatabase(); });
   items.addEventListener('click', event => {
     const id = event.target.dataset.item;
     if (!id) return;
     const item = catalog.find(entry => entry.id === id);
-    const slot = item.type === 'Gear' ? 'gear' : !state.loadout.primary ? 'primary' : 'secondary';
-    state.loadout[slot] = id;
+    state.loadout[item.slot] = id;
     renderBuild();
   });
   document.querySelectorAll('.slot').forEach(button => button.addEventListener('click', () => {
-    const slot = button.dataset.slot;
-    state.loadout[slot] = '';
+    state.loadout[button.dataset.slot] = '';
     renderBuild();
   }));
   renderDatabase(); renderBuild();
