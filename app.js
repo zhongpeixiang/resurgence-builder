@@ -3,17 +3,20 @@ import { weaponCatalog } from './data/weapons.js';
 import { talentCatalog } from './data/talents.js';
 import { brandCatalog } from './data/brands.js';
 import { protocolCatalog } from './data/os-protocols.js';
+import { skillChipCatalog } from './data/skill-chips.js';
 
 export const catalog = gearCatalog;
-export const databaseCatalog = [...gearCatalog, ...weaponCatalog, ...talentCatalog, ...brandCatalog, ...protocolCatalog];
+export const databaseCatalog = [...gearCatalog, ...weaponCatalog, ...talentCatalog, ...brandCatalog, ...protocolCatalog, ...skillChipCatalog];
 export const slots = ['Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask', 'Primary Weapon', 'Secondary Weapon'];
 
 export function filterItems(items, { category = 'All', slot = 'All', query = '' } = {}) {
   const needle = query.trim().toLowerCase();
   return items.filter(item => {
-    const itemCategory = item.type === 'Gear' ? 'Gear' : item.type === 'Weapon' ? 'Weapons' : item.type === 'Talent' ? 'Talents' : item.type === 'Brand' ? 'Brands' : 'OS Protocols';
+    const itemCategory = item.type === 'Gear' ? 'Gear' : item.type === 'Weapon' ? 'Weapons' : item.type === 'Talent' ? 'Talents' : item.type === 'Brand' ? 'Brands' : item.type === 'OS Protocol' ? 'OS Protocols' : 'Skill Chips';
     const group = item.slot ?? item.weaponClass ?? item.core;
-    const values = item.type === 'Gear'
+    const values = item.type === 'Skill Chip'
+      ? [item.name, item.kicker, item.description, ...item.facts.flatMap(fact => [fact.label, fact.value]), ...item.attributes.flatMap(attribute => [attribute.label, attribute.value])]
+      : item.type === 'Gear'
       ? [item.name, item.slot, item.tier, ...item.brands, ...item.talents]
       : item.type === 'Weapon'
         ? [item.name, item.weaponClass, item.damageType, ...item.badges, ...item.facts.flatMap(fact => [fact.label, fact.value]), ...item.talents]
@@ -40,8 +43,8 @@ if (typeof document !== 'undefined') {
   const buildScore = $('#build-score');
   const buildStatus = $('#build-status');
   const slotFilter = $('#filter-slot');
-  const groups = { Gear: ['Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask'], Weapons: [...new Set(weaponCatalog.map(item => item.weaponClass))], Talents: [...new Set(talentCatalog.map(item => item.slot))], Brands: [], 'OS Protocols': [...new Set(protocolCatalog.map(item => item.core))] };
-  const totals = { Gear: gearCatalog.length, Weapons: weaponCatalog.length, Talents: talentCatalog.length, Brands: brandCatalog.length, 'OS Protocols': protocolCatalog.length };
+  const groups = { Gear: ['Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask'], Weapons: [...new Set(weaponCatalog.map(item => item.weaponClass))], Talents: [...new Set(talentCatalog.map(item => item.slot))], Brands: [], 'OS Protocols': [...new Set(protocolCatalog.map(item => item.core))], 'Skill Chips': [] };
+  const totals = { Gear: gearCatalog.length, Weapons: weaponCatalog.length, Talents: talentCatalog.length, Brands: brandCatalog.length, 'OS Protocols': protocolCatalog.length, 'Skill Chips': skillChipCatalog.length };
 
   function renderSlotOptions() {
     slotFilter.innerHTML = ['All', ...(groups[state.category] ?? [])].map(value => `<option>${value}</option>`).join('');
