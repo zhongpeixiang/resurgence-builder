@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { catalog, databaseCatalog, filterItems, calculateBuild } from '../app.js';
+import { catalog, createBuildIssueUrl, databaseCatalog, filterItems, calculateBuild } from '../app.js';
 import { weaponCatalog } from '../data/weapons.js';
 import { talentCatalog } from '../data/talents.js';
 import { brandCatalog } from '../data/brands.js';
@@ -80,4 +80,12 @@ test('authorized SHD skill-chip import preserves all 36 records', () => {
   assert.equal(skillChipCatalog.length, 36);
   const adaptive = skillChipCatalog.find(item => item.name === 'Adaptive Armor');
   assert.match(adaptive.facts[0].value, /Phalanx Shield/);
+});
+
+test('createBuildIssueUrl serializes an equipped build into a GitHub Issue draft', () => {
+  const url = new URL(createBuildIssueUrl([{ name: 'Warlord', type: 'Weapon' }, { name: 'Demeter Quick-Stash', type: 'Gear' }]));
+  assert.equal(url.origin, 'https://github.com');
+  assert.match(url.searchParams.get('title'), /Fieldkit build/);
+  assert.match(url.searchParams.get('body'), /Warlord/);
+  assert.match(url.searchParams.get('labels'), /build/);
 });

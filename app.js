@@ -35,6 +35,12 @@ export function calculateBuild(items, loadout) {
   return { equipped, complete: slots.every(slot => Boolean(loadout[slot])) };
 }
 
+export function createBuildIssueUrl(equipped) {
+  const body = ['## Fieldkit build', '', ...equipped.map(item => `- **${item.type}:** ${item.name}`), '', '_Published from Fieldkit._'].join('\n');
+  const query = new URLSearchParams({ title: `Fieldkit build — ${equipped.length} equipped`, body, labels: 'build' });
+  return `https://github.com/zhongpeixiang/resurgence-builder/issues/new?${query}`;
+}
+
 if (typeof document !== 'undefined') {
   const state = { category: 'Gear', slot: 'All', query: '', loadout: Object.fromEntries(slots.map(slot => [slot, ''])) };
   const $ = selector => document.querySelector(selector);
@@ -71,6 +77,8 @@ if (typeof document !== 'undefined') {
     }
     buildScore.textContent = `${summary.equipped.length}/8`;
     buildStatus.textContent = summary.complete ? 'Eight-slot loadout ready' : `${summary.equipped.length} of 8 slots equipped`;
+    $('#save-build').href = createBuildIssueUrl(summary.equipped);
+    $('#save-build').classList.toggle('disabled', summary.equipped.length === 0);
   }
   $('#search').addEventListener('input', event => { state.query = event.target.value; renderDatabase(); });
   $('#filter-category').addEventListener('change', event => { state.category = event.target.value; renderSlotOptions(); renderDatabase(); });
