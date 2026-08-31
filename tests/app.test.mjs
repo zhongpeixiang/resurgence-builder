@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { catalog, databaseCatalog, filterItems, calculateBuild } from '../app.js';
 import { weaponCatalog } from '../data/weapons.js';
 import { talentCatalog } from '../data/talents.js';
+import { brandCatalog } from '../data/brands.js';
 
 test('authorized SHD gear import preserves all 72 unique records', () => {
   assert.equal(catalog.length, 72);
@@ -43,9 +44,10 @@ test('authorized SHD weapon import preserves all 90 unique records and their fac
 });
 
 test('databaseCatalog combines all imported categories, with category filters', () => {
-  assert.equal(databaseCatalog.length, 282);
+  assert.equal(databaseCatalog.length, 298);
   assert.equal(filterItems(databaseCatalog, { category: 'Weapons' }).length, 90);
   assert.equal(filterItems(databaseCatalog, { category: 'Talents' }).length, 120);
+  assert.equal(filterItems(databaseCatalog, { category: 'Brands' }).length, 16);
 });
 
 test('authorized SHD talent import combines both pages into 120 unique records', () => {
@@ -54,4 +56,11 @@ test('authorized SHD talent import combines both pages into 120 unique records',
   const assault = talentCatalog.find(item => item.name === 'Assault Protection');
   assert.equal(assault.slot, 'Backpack');
   assert.match(assault.description, /Extra Health/);
+});
+
+test('authorized SHD brand import preserves all 16 brand-set bonuses', () => {
+  assert.equal(brandCatalog.length, 16);
+  const boom = brandCatalog.find(item => item.name === 'Boom-Shakalaka');
+  assert.equal(boom.bonuses[0].label, '2 PIECES');
+  assert.match(boom.bonuses[0].value, /Skill Cooldown Recovery/);
 });

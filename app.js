@@ -1,21 +1,24 @@
 import { gearCatalog } from './data/gear.js';
 import { weaponCatalog } from './data/weapons.js';
 import { talentCatalog } from './data/talents.js';
+import { brandCatalog } from './data/brands.js';
 
 export const catalog = gearCatalog;
-export const databaseCatalog = [...gearCatalog, ...weaponCatalog, ...talentCatalog];
+export const databaseCatalog = [...gearCatalog, ...weaponCatalog, ...talentCatalog, ...brandCatalog];
 export const slots = ['Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask', 'Primary Weapon', 'Secondary Weapon'];
 
 export function filterItems(items, { category = 'All', slot = 'All', query = '' } = {}) {
   const needle = query.trim().toLowerCase();
   return items.filter(item => {
-    const itemCategory = item.type === 'Gear' ? 'Gear' : item.type === 'Weapon' ? 'Weapons' : 'Talents';
+    const itemCategory = item.type === 'Gear' ? 'Gear' : item.type === 'Weapon' ? 'Weapons' : item.type === 'Talent' ? 'Talents' : 'Brands';
     const group = item.slot ?? item.weaponClass;
     const values = item.type === 'Gear'
       ? [item.name, item.slot, item.tier, ...item.brands, ...item.talents]
       : item.type === 'Weapon'
         ? [item.name, item.weaponClass, item.damageType, ...item.badges, ...item.facts.flatMap(fact => [fact.label, fact.value]), ...item.talents]
-        : [item.name, item.kicker, item.slot, item.description, item.secondaryDescription, ...item.attributes.flatMap(attribute => [attribute.label, attribute.value])];
+        : item.type === 'Talent'
+          ? [item.name, item.kicker, item.slot, item.description, item.secondaryDescription, ...item.attributes.flatMap(attribute => [attribute.label, attribute.value])]
+          : [item.name, item.kicker, ...item.bonuses.flatMap(bonus => [bonus.label, bonus.value])];
     return (category === 'All' || itemCategory === category) && (slot === 'All' || group === slot) &&
       (!needle || values.join(' ').toLowerCase().includes(needle));
   });
@@ -34,8 +37,8 @@ if (typeof document !== 'undefined') {
   const buildScore = $('#build-score');
   const buildStatus = $('#build-status');
   const slotFilter = $('#filter-slot');
-  const groups = { Gear: ['Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask'], Weapons: [...new Set(weaponCatalog.map(item => item.weaponClass))], Talents: [...new Set(talentCatalog.map(item => item.slot))] };
-  const totals = { Gear: gearCatalog.length, Weapons: weaponCatalog.length, Talents: talentCatalog.length };
+  const groups = { Gear: ['Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask'], Weapons: [...new Set(weaponCatalog.map(item => item.weaponClass))], Talents: [...new Set(talentCatalog.map(item => item.slot))], Brands: [] };
+  const totals = { Gear: gearCatalog.length, Weapons: weaponCatalog.length, Talents: talentCatalog.length, Brands: brandCatalog.length };
 
   function renderSlotOptions() {
     slotFilter.innerHTML = ['All', ...(groups[state.category] ?? [])].map(value => `<option>${value}</option>`).join('');
@@ -44,10 +47,11 @@ if (typeof document !== 'undefined') {
   function gearCard(item) { return `<article class="item-card"><div><p class="eyebrow"><span class="tag">${item.slot}</span><span class="tag ghost">${item.tier}</span></p><h3>${item.name}</h3><p class="tags">${item.modSlots.map(tag => `<span>${tag}</span>`).join('')}</p></div><div class="gear-detail"><p><small>${item.fact.label}</small><b>${item.fact.value}</b><em>${item.fact.note}</em></p><p class="tags"><span>Brands: ${item.brands.join(', ') || '—'}</span><span>Talents: ${item.talents.join(', ') || '—'}</span></p></div><button class="add" data-item="${item.id}" data-target="${item.slot}">Equip ${item.slot}</button></article>`; }
   function weaponCard(item) { return `<article class="item-card"><div><p class="eyebrow"><span class="tag">${item.weaponClass}</span><span class="tag ghost">${item.damageType}</span></p><h3>${item.name}</h3><p class="tags">${item.badges.map(tag => `<span>${tag}</span>`).join('')}</p></div><div class="gear-detail"><p><small>${item.facts[0]?.label ?? '—'}</small><b>${item.facts[0]?.value ?? '—'}</b><em>${item.facts[0]?.note ?? ''}</em></p><p class="tags">${item.facts.slice(1, 3).map(fact => `<span>${fact.label}: ${fact.value}</span>`).join('')}</p></div><div class="weapon-actions"><button class="add" data-item="${item.id}" data-target="Primary Weapon">Equip primary</button><button class="add" data-item="${item.id}" data-target="Secondary Weapon">Equip secondary</button></div></article>`; }
   function talentCard(item) { return `<article class="item-card talent-card"><div><p class="eyebrow"><span class="tag">${item.slot}</span><span class="tag ghost">Talent</span></p><h3>${item.name}</h3><p class="talent-copy">${item.description || 'No primary description supplied.'}</p></div><div class="gear-detail"><p><small>ATTRIBUTE DETAILS</small><b>${item.attributes.length || 0}</b><em>tracked properties</em></p><p class="tags">${item.attributes.map(attribute => `<span>${attribute.label}: ${attribute.value}</span>`).join('') || '<span>No additional attributes</span>'}</p></div></article>`; }
+  function brandCard(item) { return `<article class="item-card brand-card"><div><p class="eyebrow"><span class="tag">Brand Set</span><span class="tag ghost">Equipment</span></p><h3>${item.name}</h3><p class="talent-copy">Sourced equipment-set bonuses.</p></div><div class="gear-detail"><p><small>SET BONUSES</small><b>${item.bonuses.length}</b><em>piece thresholds</em></p><p class="tags">${item.bonuses.map(bonus => `<span>${bonus.label}: ${bonus.value}</span>`).join('')}</p></div></article>`; }
   function renderDatabase() {
     const visible = filterItems(databaseCatalog, state);
     resultCount.textContent = `${visible.length} / ${state.category === 'All' ? databaseCatalog.length : totals[state.category]} records`;
-    items.innerHTML = visible.map(item => item.type === 'Gear' ? gearCard(item) : item.type === 'Weapon' ? weaponCard(item) : talentCard(item)).join('') || '<p class="empty">No equipment matches this search.</p>';
+    items.innerHTML = visible.map(item => item.type === 'Gear' ? gearCard(item) : item.type === 'Weapon' ? weaponCard(item) : item.type === 'Talent' ? talentCard(item) : brandCard(item)).join('') || '<p class="empty">No equipment matches this search.</p>';
   }
   function renderBuild() {
     const summary = calculateBuild(databaseCatalog, state.loadout);
