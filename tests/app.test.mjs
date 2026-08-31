@@ -5,6 +5,7 @@ import { weaponCatalog } from '../data/weapons.js';
 import { talentCatalog } from '../data/talents.js';
 import { brandCatalog } from '../data/brands.js';
 import { protocolCatalog } from '../data/os-protocols.js';
+import { skillChipCatalog } from '../data/skill-chips.js';
 
 test('authorized SHD gear import preserves all 72 unique records', () => {
   assert.equal(catalog.length, 72);
@@ -45,11 +46,12 @@ test('authorized SHD weapon import preserves all 90 unique records and their fac
 });
 
 test('databaseCatalog combines all imported categories, with category filters', () => {
-  assert.equal(databaseCatalog.length, 315);
+  assert.equal(databaseCatalog.length, 351);
   assert.equal(filterItems(databaseCatalog, { category: 'Weapons' }).length, 90);
   assert.equal(filterItems(databaseCatalog, { category: 'Talents' }).length, 120);
   assert.equal(filterItems(databaseCatalog, { category: 'Brands' }).length, 16);
   assert.equal(filterItems(databaseCatalog, { category: 'OS Protocols' }).length, 17);
+  assert.equal(filterItems(databaseCatalog, { category: 'Skill Chips' }).length, 36);
 });
 
 test('authorized SHD talent import combines both pages into 120 unique records', () => {
@@ -72,4 +74,10 @@ test('authorized SHD OS protocol import preserves all 17 records', () => {
   const collateral = protocolCatalog.find(item => item.name === 'Collateral Damage');
   assert.equal(collateral.core, 'Engineering');
   assert.match(collateral.description, /3000% Engineering/);
+});
+
+test('authorized SHD skill-chip import preserves all 36 records', () => {
+  assert.equal(skillChipCatalog.length, 36);
+  const adaptive = skillChipCatalog.find(item => item.name === 'Adaptive Armor');
+  assert.match(adaptive.facts[0].value, /Phalanx Shield/);
 });
