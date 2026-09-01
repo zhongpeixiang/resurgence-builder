@@ -38,6 +38,13 @@ export function calculateBuild(items, loadout) {
   return { equipped, complete: slots.every(slot => Boolean(loadout[slot])) };
 }
 
+export function itemsForSlot(slot) {
+  if (slot === 'Primary Weapon' || slot === 'Secondary Weapon') return weaponCatalog;
+  if (slot === 'Specialization') return specializationCatalog;
+  if (slot === 'OS Protocol') return protocolCatalog;
+  return gearCatalog.filter(item => item.slot === slot);
+}
+
 export function createBuildIssueUrl(equipped) {
   const body = ['## Fieldkit build', '', ...equipped.map(item => `- **${item.type}:** ${item.name}`), '', '_Published from Fieldkit._'].join('\n');
   const query = new URLSearchParams({ title: `Fieldkit build — ${equipped.length} equipped`, body, labels: 'build' });
@@ -78,7 +85,8 @@ if (typeof document !== 'undefined') {
       const target = $(`[data-slot="${slot}"]`);
       target.classList.toggle('filled', Boolean(item));
       const detail = item ? (item.type === 'Gear' ? `${item.tier} · ${item.fact.label}: ${item.fact.value}` : item.type === 'Weapon' ? `${item.weaponClass} · ${item.facts[0]?.label}: ${item.facts[0]?.value}` : item.type === 'OS Protocol' ? `${item.core} · OS protocol` : item.type === 'Specialization' ? item.focusPaths : item.type) : `Choose a ${slot.toLowerCase()} from the database`;
-      target.innerHTML = item ? `<strong>${slot}</strong><span>${item.name}</span><small>${detail}</small>` : `<strong>${slot}</strong><span>Empty slot</span><small>${detail}</small>`;
+      const options = itemsForSlot(slot).map(option => `<option value="${option.id}" ${option.id === state.loadout[slot] ? 'selected' : ''}>${option.name}</option>`).join('');
+      target.innerHTML = `<strong>${slot}</strong><span>${item?.name ?? 'Empty slot'}</span><small>${detail}</small><select class="slot-select" data-slot-select="${slot}"><option value="">Select from database…</option>${options}</select>`;
     }
     buildScore.textContent = `${summary.equipped.length}/${slots.length}`;
     buildStatus.textContent = summary.complete ? 'Loadout ready' : `${summary.equipped.length} of ${slots.length} slots equipped`;
@@ -89,6 +97,6 @@ if (typeof document !== 'undefined') {
   $('#filter-category').addEventListener('change', event => { state.category = event.target.value; renderSlotOptions(); renderDatabase(); });
   slotFilter.addEventListener('change', event => { state.slot = event.target.value; renderDatabase(); });
   items.addEventListener('click', event => { const id = event.target.dataset.item, target = event.target.dataset.target; if (!id || !target) return; state.loadout[target] = id; renderBuild(); });
-  document.querySelectorAll('.slot').forEach(button => button.addEventListener('click', () => { state.loadout[button.dataset.slot] = ''; renderBuild(); }));
+  document.querySelector('.slots').addEventListener('change', event => { const slot = event.target.dataset.slotSelect; if (!slot) return; state.loadout[slot] = event.target.value; renderBuild(); });
   renderSlotOptions(); renderDatabase(); renderBuild();
 }
