@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { catalog, createBuildIssueUrl, databaseCatalog, filterItems, calculateBuild } from '../app.js';
+import { catalog, createBuildIssueUrl, databaseCatalog, filterItems, calculateBuild, itemsForSlot } from '../app.js';
 import { weaponCatalog } from '../data/weapons.js';
 import { talentCatalog } from '../data/talents.js';
 import { brandCatalog } from '../data/brands.js';
@@ -84,6 +84,13 @@ test('authorized SHD skill-chip import preserves all 36 records', () => {
   assert.match(adaptive.facts[0].value, /Phalanx Shield/);
   assert.deepEqual(adaptive.badges, ['SUPERIOR', 'HIGH-END']);
   assert.equal(adaptive.lines[0].label, '3-PIECE TALENT');
+});
+
+test('builder slot options come from imported database catalogs', () => {
+  assert.equal(itemsForSlot('Specialization').length, 3);
+  assert.equal(itemsForSlot('OS Protocol').length, 17);
+  assert.equal(itemsForSlot('Primary Weapon').length, 90);
+  assert.ok(itemsForSlot('Backpack').every(item => item.slot === 'Backpack'));
 });
 
 test('authorized SHD specializations import preserves all three source records', () => {
