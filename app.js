@@ -62,6 +62,14 @@ export function calculateWeaponDps(weapon) {
   };
 }
 
+export function getWeaponHandling(weapon) {
+  const meters = weapon.facts.find(fact => fact.label === 'HANDLING')?.meters ?? [];
+  return {
+    accuracy: meters.find(meter => meter.label === 'ACCURACY')?.value ?? 0,
+    stability: meters.find(meter => meter.label === 'STABILITY')?.value ?? 0
+  };
+}
+
 export function createBuildIssueUrl(equipped) {
   const body = ['## Fieldkit build', '', ...equipped.map(item => `- **${item.type}:** ${item.name}`), '', '_Published from Fieldkit._'].join('\n');
   const query = new URLSearchParams({ title: `Fieldkit build — ${equipped.length} equipped`, body, labels: 'build' });
@@ -86,7 +94,8 @@ if (typeof document !== 'undefined') {
   function gearCard(item) { return `<article class="item-card"><div><p class="eyebrow"><span class="tag">${item.slot}</span><span class="tag ghost">${item.tier}</span></p><h3>${item.name}</h3><p class="tags">${item.modSlots.map(tag => `<span>${tag}</span>`).join('')}</p></div><div class="gear-detail"><p><small>${item.fact.label}</small><b>${item.fact.value}</b><em>${item.fact.note}</em></p><p class="tags"><span>Brands: ${item.brands.join(', ') || '—'}</span><span>Talents: ${item.talents.join(', ') || '—'}</span></p></div><button class="add" data-item="${item.id}" data-target="${item.slot}">Equip ${item.slot}</button></article>`; }
   function weaponCard(item) {
     const dps = calculateWeaponDps(item);
-    return `<article class="item-card"><div><p class="eyebrow"><span class="tag">${item.weaponClass}</span><span class="tag ghost">${item.damageType}</span></p><h3>${item.name}</h3><p class="tags">${item.badges.map(tag => `<span>${tag}</span>`).join('')}<span>BURST DPS: ${dps.burst}</span><span>SUSTAINED DPS: ${dps.sustained}</span></p></div><div class="gear-detail"><p><small>${item.facts[0]?.label ?? '—'}</small><b>${item.facts[0]?.value ?? '—'}</b><em>${item.facts[0]?.note ?? ''}</em></p><p class="tags">${item.facts.slice(1, 3).map(fact => `<span>${fact.label}: ${fact.value}</span>`).join('')}</p></div><div class="weapon-actions"><button class="add" data-item="${item.id}" data-target="Primary Weapon">Equip primary</button><button class="add" data-item="${item.id}" data-target="Secondary Weapon">Equip secondary</button></div></article>`;
+    const handling = getWeaponHandling(item);
+    return `<article class="item-card"><div><p class="eyebrow"><span class="tag">${item.weaponClass}</span><span class="tag ghost">${item.damageType}</span></p><h3>${item.name}</h3><p class="tags">${item.badges.map(tag => `<span>${tag}</span>`).join('')}<span>BURST DPS: ${dps.burst}</span><span>SUSTAINED DPS: ${dps.sustained}</span><span>ACCURACY: ${handling.accuracy}</span><span>STABILITY: ${handling.stability}</span></p></div><div class="gear-detail"><p><small>${item.facts[0]?.label ?? '—'}</small><b>${item.facts[0]?.value ?? '—'}</b><em>${item.facts[0]?.note ?? ''}</em></p><p class="tags">${item.facts.slice(1, 3).map(fact => `<span>${fact.label}: ${fact.value}</span>`).join('')}</p></div><div class="weapon-actions"><button class="add" data-item="${item.id}" data-target="Primary Weapon">Equip primary</button><button class="add" data-item="${item.id}" data-target="Secondary Weapon">Equip secondary</button></div></article>`;
   }
   function talentCard(item) { return `<article class="item-card talent-card"><div><p class="eyebrow"><span class="tag">${item.slot}</span><span class="tag ghost">Talent</span></p><h3>${item.name}</h3><p class="talent-copy">${item.description || 'No primary description supplied.'}</p></div><div class="gear-detail"><p><small>ATTRIBUTE DETAILS</small><b>${item.attributes.length || 0}</b><em>tracked properties</em></p><p class="tags">${item.attributes.map(attribute => `<span>${attribute.label}: ${attribute.value}</span>`).join('') || '<span>No additional attributes</span>'}</p></div></article>`; }
   function brandCard(item) { return `<article class="item-card brand-card"><div><p class="eyebrow"><span class="tag">Brand Set</span><span class="tag ghost">Equipment</span></p><h3>${item.name}</h3><p class="talent-copy">Sourced equipment-set bonuses.</p></div><div class="gear-detail"><p><small>SET BONUSES</small><b>${item.bonuses.length}</b><em>piece thresholds</em></p><p class="tags">${item.bonuses.map(bonus => `<span>${bonus.label}: ${bonus.value}</span>`).join('')}</p></div></article>`; }
