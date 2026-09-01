@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { catalog, calculateWeaponDps, createBuildIssueUrl, databaseCatalog, filterItems, calculateBuild, itemsForSlot } from '../app.js';
+import { catalog, calculateWeaponDps, createBuildIssueUrl, databaseCatalog, filterItems, calculateBuild, getWeaponHandling, itemsForSlot } from '../app.js';
 import { weaponCatalog } from '../data/weapons.js';
 import { talentCatalog } from '../data/talents.js';
 import { brandCatalog } from '../data/brands.js';
@@ -49,6 +49,11 @@ test('authorized SHD weapon import preserves all 90 unique records and their fac
 test('weapon DPS uses sourced damage, RPM, magazine, and reload values', () => {
   const warlord = weaponCatalog.find(item => item.name === 'Warlord');
   assert.deepEqual(calculateWeaponDps(warlord), { burst: '11,790', sustained: '6,431' });
+});
+
+test('weapon handling reads sourced accuracy and stability meters', () => {
+  const warlord = weaponCatalog.find(item => item.name === 'Warlord');
+  assert.deepEqual(getWeaponHandling(warlord), { accuracy: 79, stability: 40 });
 });
 
 test('databaseCatalog combines all imported categories, with category filters', () => {
