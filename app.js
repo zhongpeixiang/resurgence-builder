@@ -45,6 +45,23 @@ export function itemsForSlot(slot) {
   return gearCatalog.filter(item => item.slot === slot);
 }
 
+export function calculateWeaponDps(weapon) {
+  const damage = weapon.facts.find(fact => fact.label === 'DAMAGE')?.value ?? '';
+  const rateMag = weapon.facts.find(fact => fact.label === 'RATE / MAG')?.value ?? '';
+  const reload = weapon.facts.find(fact => fact.label === 'RELOAD')?.value ?? '';
+  const [low, high] = damage.replaceAll(',', '').split(/[–-]/).map(Number);
+  const rpm = Number(rateMag.match(/(\d+)\s*RPM/)?.[1]);
+  const magazine = Number(rateMag.match(/(\d+)\s*MAG/)?.[1]);
+  const reloadSeconds = Number(reload.match(/[\d.]+/)?.[0]);
+  if (![low, high, rpm, magazine, reloadSeconds].every(Number.isFinite)) return { burst: '—', sustained: '—' };
+  const roundsPerSecond = rpm / 60;
+  const formatRange = fn => { const values = [fn(low), fn(high)].map(value => Math.round(value).toLocaleString('en-US')); return values[0] === values[1] ? values[0] : values.join('–'); };
+  return {
+    burst: formatRange(damageValue => damageValue * roundsPerSecond),
+    sustained: formatRange(damageValue => (damageValue * magazine) / ((magazine / roundsPerSecond) + reloadSeconds))
+  };
+}
+
 export function createBuildIssueUrl(equipped) {
   const body = ['## Fieldkit build', '', ...equipped.map(item => `- **${item.type}:** ${item.name}`), '', '_Published from Fieldkit._'].join('\n');
   const query = new URLSearchParams({ title: `Fieldkit build — ${equipped.length} equipped`, body, labels: 'build' });
@@ -67,7 +84,10 @@ if (typeof document !== 'undefined') {
     state.slot = 'All';
   }
   function gearCard(item) { return `<article class="item-card"><div><p class="eyebrow"><span class="tag">${item.slot}</span><span class="tag ghost">${item.tier}</span></p><h3>${item.name}</h3><p class="tags">${item.modSlots.map(tag => `<span>${tag}</span>`).join('')}</p></div><div class="gear-detail"><p><small>${item.fact.label}</small><b>${item.fact.value}</b><em>${item.fact.note}</em></p><p class="tags"><span>Brands: ${item.brands.join(', ') || '—'}</span><span>Talents: ${item.talents.join(', ') || '—'}</span></p></div><button class="add" data-item="${item.id}" data-target="${item.slot}">Equip ${item.slot}</button></article>`; }
-  function weaponCard(item) { return `<article class="item-card"><div><p class="eyebrow"><span class="tag">${item.weaponClass}</span><span class="tag ghost">${item.damageType}</span></p><h3>${item.name}</h3><p class="tags">${item.badges.map(tag => `<span>${tag}</span>`).join('')}</p></div><div class="gear-detail"><p><small>${item.facts[0]?.label ?? '—'}</small><b>${item.facts[0]?.value ?? '—'}</b><em>${item.facts[0]?.note ?? ''}</em></p><p class="tags">${item.facts.slice(1, 3).map(fact => `<span>${fact.label}: ${fact.value}</span>`).join('')}</p></div><div class="weapon-actions"><button class="add" data-item="${item.id}" data-target="Primary Weapon">Equip primary</button><button class="add" data-item="${item.id}" data-target="Secondary Weapon">Equip secondary</button></div></article>`; }
+  function weaponCard(item) {
+    const dps = calculateWeaponDps(item);
+    return `<article class="item-card"><div><p class="eyebrow"><span class="tag">${item.weaponClass}</span><span class="tag ghost">${item.damageType}</span></p><h3>${item.name}</h3><p class="tags">${item.badges.map(tag => `<span>${tag}</span>`).join('')}<span>BURST DPS: ${dps.burst}</span><span>SUSTAINED DPS: ${dps.sustained}</span></p></div><div class="gear-detail"><p><small>${item.facts[0]?.label ?? '—'}</small><b>${item.facts[0]?.value ?? '—'}</b><em>${item.facts[0]?.note ?? ''}</em></p><p class="tags">${item.facts.slice(1, 3).map(fact => `<span>${fact.label}: ${fact.value}</span>`).join('')}</p></div><div class="weapon-actions"><button class="add" data-item="${item.id}" data-target="Primary Weapon">Equip primary</button><button class="add" data-item="${item.id}" data-target="Secondary Weapon">Equip secondary</button></div></article>`;
+  }
   function talentCard(item) { return `<article class="item-card talent-card"><div><p class="eyebrow"><span class="tag">${item.slot}</span><span class="tag ghost">Talent</span></p><h3>${item.name}</h3><p class="talent-copy">${item.description || 'No primary description supplied.'}</p></div><div class="gear-detail"><p><small>ATTRIBUTE DETAILS</small><b>${item.attributes.length || 0}</b><em>tracked properties</em></p><p class="tags">${item.attributes.map(attribute => `<span>${attribute.label}: ${attribute.value}</span>`).join('') || '<span>No additional attributes</span>'}</p></div></article>`; }
   function brandCard(item) { return `<article class="item-card brand-card"><div><p class="eyebrow"><span class="tag">Brand Set</span><span class="tag ghost">Equipment</span></p><h3>${item.name}</h3><p class="talent-copy">Sourced equipment-set bonuses.</p></div><div class="gear-detail"><p><small>SET BONUSES</small><b>${item.bonuses.length}</b><em>piece thresholds</em></p><p class="tags">${item.bonuses.map(bonus => `<span>${bonus.label}: ${bonus.value}</span>`).join('')}</p></div></article>`; }
   function protocolCard(item) { return `<article class="item-card protocol-card"><div><p class="eyebrow"><span class="tag">${item.core}</span><span class="tag ghost">OS Protocol</span></p><h3>${item.name}</h3><p class="talent-copy">${item.description || 'No primary description supplied.'}</p></div><div class="gear-detail"><p><small>ATTRIBUTE DETAILS</small><b>${item.attributes.length || 0}</b><em>tracked properties</em></p><p class="tags">${item.attributes.map(attribute => `<span>${attribute.label}: ${attribute.value}</span>`).join('') || '<span>No additional attributes</span>'}</p></div><button class="add" data-item="${item.id}" data-target="OS Protocol">Equip OS protocol</button></article>`; }
