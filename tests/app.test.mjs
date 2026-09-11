@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { catalog, calculateWeaponDps, createBuildIssueUrl, databaseCatalog, filterItems, calculateBuild, getWeaponHandling, itemsForSlot } from '../app.js';
+import { catalog, calculateWeaponDps, createBuildIssueUrl, databaseCatalog, filterItems, calculateBuild, getWeaponHandling, itemsForSlot, weaponTalentPool } from '../app.js';
 import { weaponCatalog } from '../data/weapons.js';
 import { talentCatalog } from '../data/talents.js';
 import { brandCatalog } from '../data/brands.js';
@@ -101,6 +101,18 @@ test('builder slot options come from imported database catalogs', () => {
   assert.equal(itemsForSlot('OS Protocol').length, 17);
   assert.equal(itemsForSlot('Primary Weapon').length, 90);
   assert.ok(itemsForSlot('Backpack').every(item => item.slot === 'Backpack'));
+});
+
+test('weapon talent pools only offer sourced talents compatible with the equipped weapon and talent slot', () => {
+  const warlord = weaponCatalog.find(item => item.name === 'Warlord');
+  const primaryLoadout = { 'Primary Weapon': warlord.id };
+  const firstPool = weaponTalentPool('Primary Weapon Talent 1', primaryLoadout);
+  const secondPool = itemsForSlot('Primary Weapon Talent 2', primaryLoadout);
+
+  assert.ok(firstPool.length > 0);
+  assert.ok(firstPool.every(talent => talent.slot === 'Weapon 1' && warlord.talents.includes(talent.name)));
+  assert.ok(secondPool.every(talent => talent.slot === 'Weapon 2' && warlord.talents.includes(talent.name)));
+  assert.deepEqual(itemsForSlot('Primary Weapon Talent 1'), []);
 });
 
 test('authorized SHD specializations import preserves all three source records', () => {

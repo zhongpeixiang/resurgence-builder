@@ -8,7 +8,13 @@ import { specializationCatalog } from './data/specializations.js';
 
 export const catalog = gearCatalog;
 export const databaseCatalog = [...gearCatalog, ...weaponCatalog, ...talentCatalog, ...brandCatalog, ...protocolCatalog, ...skillChipCatalog, ...specializationCatalog];
-export const slots = ['Specialization', 'OS Protocol', 'Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask', 'Primary Weapon', 'Secondary Weapon'];
+export const weaponTalentSlotConfig = {
+  'Primary Weapon Talent 1': { weaponSlot: 'Primary Weapon', talentSlot: 'Weapon 1' },
+  'Primary Weapon Talent 2': { weaponSlot: 'Primary Weapon', talentSlot: 'Weapon 2' },
+  'Secondary Weapon Talent 1': { weaponSlot: 'Secondary Weapon', talentSlot: 'Weapon 1' },
+  'Secondary Weapon Talent 2': { weaponSlot: 'Secondary Weapon', talentSlot: 'Weapon 2' }
+};
+export const slots = ['Specialization', 'OS Protocol', 'Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask', 'Primary Weapon', 'Primary Weapon Talent 1', 'Primary Weapon Talent 2', 'Secondary Weapon', 'Secondary Weapon Talent 1', 'Secondary Weapon Talent 2'];
 
 export function filterItems(items, { category = 'All', slot = 'All', query = '' } = {}) {
   const needle = query.trim().toLowerCase();
@@ -38,7 +44,16 @@ export function calculateBuild(items, loadout) {
   return { equipped, complete: slots.every(slot => Boolean(loadout[slot])) };
 }
 
-export function itemsForSlot(slot) {
+export function weaponTalentPool(slot, loadout = {}) {
+  const config = weaponTalentSlotConfig[slot];
+  if (!config) return [];
+  const weapon = weaponCatalog.find(item => item.id === loadout[config.weaponSlot]);
+  if (!weapon) return [];
+  return talentCatalog.filter(talent => talent.slot === config.talentSlot && weapon.talents.includes(talent.name));
+}
+
+export function itemsForSlot(slot, loadout = {}) {
+  if (weaponTalentSlotConfig[slot]) return weaponTalentPool(slot, loadout);
   if (slot === 'Primary Weapon' || slot === 'Secondary Weapon') return weaponCatalog;
   if (slot === 'Specialization') return specializationCatalog;
   if (slot === 'OS Protocol') return protocolCatalog;
@@ -113,8 +128,8 @@ if (typeof document !== 'undefined') {
       const item = databaseCatalog.find(entry => entry.id === state.loadout[slot]);
       const target = $(`[data-slot="${slot}"]`);
       target.classList.toggle('filled', Boolean(item));
-      const detail = item ? (item.type === 'Gear' ? `${item.tier} · ${item.fact.label}: ${item.fact.value}` : item.type === 'Weapon' ? `${item.weaponClass} · ${item.facts[0]?.label}: ${item.facts[0]?.value}` : item.type === 'OS Protocol' ? `${item.core} · OS protocol` : item.type === 'Specialization' ? item.focusPaths : item.type) : `Choose a ${slot.toLowerCase()} from the database`;
-      const options = itemsForSlot(slot).map(option => `<option value="${option.id}" ${option.id === state.loadout[slot] ? 'selected' : ''}>${option.name}</option>`).join('');
+      const detail = item ? (item.type === 'Gear' ? `${item.tier} · ${item.fact.label}: ${item.fact.value}` : item.type === 'Weapon' ? `${item.weaponClass} · ${item.facts[0]?.label}: ${item.facts[0]?.value}` : item.type === 'Talent' ? item.description : item.type === 'OS Protocol' ? `${item.core} · OS protocol` : item.type === 'Specialization' ? item.focusPaths : item.type) : weaponTalentSlotConfig[slot] && !state.loadout[weaponTalentSlotConfig[slot].weaponSlot] ? `Equip ${weaponTalentSlotConfig[slot].weaponSlot.toLowerCase()} first` : `Choose a ${slot.toLowerCase()} from the database`;
+      const options = itemsForSlot(slot, state.loadout).map(option => `<option value="${option.id}" ${option.id === state.loadout[slot] ? 'selected' : ''}>${option.name}</option>`).join('');
       target.innerHTML = `<strong>${slot}</strong><span>${item?.name ?? 'Empty slot'}</span><small>${detail}</small><select class="slot-select" data-slot-select="${slot}"><option value="">Select from database…</option>${options}</select>`;
     }
     buildScore.textContent = `${summary.equipped.length}/${slots.length}`;
@@ -125,7 +140,12 @@ if (typeof document !== 'undefined') {
   $('#search').addEventListener('input', event => { state.query = event.target.value; renderDatabase(); });
   $('#filter-category').addEventListener('change', event => { state.category = event.target.value; renderSlotOptions(); renderDatabase(); });
   slotFilter.addEventListener('change', event => { state.slot = event.target.value; renderDatabase(); });
-  items.addEventListener('click', event => { const id = event.target.dataset.item, target = event.target.dataset.target; if (!id || !target) return; state.loadout[target] = id; renderBuild(); });
-  document.querySelector('.slots').addEventListener('change', event => { const slot = event.target.dataset.slotSelect; if (!slot) return; state.loadout[slot] = event.target.value; renderBuild(); });
+  function clearWeaponTalents(weaponSlot) {
+    for (const [talentSlot, config] of Object.entries(weaponTalentSlotConfig)) {
+      if (config.weaponSlot === weaponSlot) state.loadout[talentSlot] = '';
+    }
+  }
+  items.addEventListener('click', event => { const id = event.target.dataset.item, target = event.target.dataset.target; if (!id || !target) return; if (target === 'Primary Weapon' || target === 'Secondary Weapon') clearWeaponTalents(target); state.loadout[target] = id; renderBuild(); });
+  document.querySelector('.slots').addEventListener('change', event => { const slot = event.target.dataset.slotSelect; if (!slot) return; if (slot === 'Primary Weapon' || slot === 'Secondary Weapon') clearWeaponTalents(slot); state.loadout[slot] = event.target.value; renderBuild(); });
   renderSlotOptions(); renderDatabase(); renderBuild();
 }
