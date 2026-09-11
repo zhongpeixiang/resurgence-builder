@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { catalog, calculateWeaponDps, createBuildIssueUrl, databaseCatalog, filterItems, calculateBuild, getWeaponHandling, itemsForSlot, weaponTalentPool } from '../app.js';
+import { catalog, calculateWeaponDps, createBuildIssueUrl, databaseCatalog, filterItems, calculateBuild, getWeaponHandling, getWeaponTalentPools, itemsForSlot, weaponTalentPool } from '../app.js';
 import { weaponCatalog } from '../data/weapons.js';
 import { talentCatalog } from '../data/talents.js';
 import { brandCatalog } from '../data/brands.js';
@@ -49,6 +49,15 @@ test('authorized SHD weapon import preserves all 90 unique records and their fac
 test('weapon DPS uses sourced damage, RPM, magazine, and reload values', () => {
   const warlord = weaponCatalog.find(item => item.name === 'Warlord');
   assert.deepEqual(calculateWeaponDps(warlord), { burst: '11,790', sustained: '6,431' });
+});
+
+test('weapon database talent pools group all sourced options by weapon talent slot', () => {
+  const warlord = weaponCatalog.find(item => item.name === 'Warlord');
+  const pools = getWeaponTalentPools(warlord);
+
+  assert.deepEqual(pools.map(pool => pool.slot), ['Weapon 1', 'Weapon 2']);
+  assert.equal(pools.flatMap(pool => pool.talents).length, warlord.talents.length);
+  assert.ok(pools.every(pool => pool.talents.every(talent => talent.slot === pool.slot && warlord.talents.includes(talent.name))));
 });
 
 test('weapon handling reads sourced accuracy and stability meters', () => {
