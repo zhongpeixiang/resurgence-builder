@@ -8,7 +8,13 @@ import { specializationCatalog } from './data/specializations.js';
 
 export const catalog = gearCatalog;
 export const databaseCatalog = [...gearCatalog, ...weaponCatalog, ...talentCatalog, ...brandCatalog, ...protocolCatalog, ...skillChipCatalog, ...specializationCatalog];
-export const slots = ['Specialization', 'OS Protocol', 'Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask', 'Primary Weapon', 'Secondary Weapon'];
+export const weaponTalentSlotConfig = {
+  'Primary Weapon Talent 1': { weaponSlot: 'Primary Weapon', talentSlot: 'Weapon 1' },
+  'Primary Weapon Talent 2': { weaponSlot: 'Primary Weapon', talentSlot: 'Weapon 2' },
+  'Secondary Weapon Talent 1': { weaponSlot: 'Secondary Weapon', talentSlot: 'Weapon 1' },
+  'Secondary Weapon Talent 2': { weaponSlot: 'Secondary Weapon', talentSlot: 'Weapon 2' }
+};
+export const slots = ['Specialization', 'OS Protocol', 'Backpack', 'Body Armor', 'Gloves', 'Holster', 'Knee Pads', 'Mask', 'Primary Weapon', 'Primary Weapon Talent 1', 'Primary Weapon Talent 2', 'Secondary Weapon', 'Secondary Weapon Talent 1', 'Secondary Weapon Talent 2'];
 
 export function filterItems(items, { category = 'All', slot = 'All', query = '' } = {}) {
   const needle = query.trim().toLowerCase();
@@ -38,7 +44,22 @@ export function calculateBuild(items, loadout) {
   return { equipped, complete: slots.every(slot => Boolean(loadout[slot])) };
 }
 
-export function itemsForSlot(slot) {
+export function getWeaponTalentPools(weapon) {
+  return ['Weapon 1', 'Weapon 2'].map(slot => ({
+    slot,
+    talents: talentCatalog.filter(talent => talent.slot === slot && weapon.talents.includes(talent.name))
+  }));
+}
+
+export function weaponTalentPool(slot, loadout = {}) {
+  const config = weaponTalentSlotConfig[slot];
+  if (!config) return [];
+  const weapon = weaponCatalog.find(item => item.id === loadout[config.weaponSlot]);
+  return weapon ? getWeaponTalentPools(weapon).find(pool => pool.slot === config.talentSlot).talents : [];
+}
+
+export function itemsForSlot(slot, loadout = {}) {
+  if (weaponTalentSlotConfig[slot]) return weaponTalentPool(slot, loadout);
   if (slot === 'Primary Weapon' || slot === 'Secondary Weapon') return weaponCatalog;
   if (slot === 'Specialization') return specializationCatalog;
   if (slot === 'OS Protocol') return protocolCatalog;
@@ -95,7 +116,8 @@ if (typeof document !== 'undefined') {
   function weaponCard(item) {
     const dps = calculateWeaponDps(item);
     const handling = getWeaponHandling(item);
-    return `<article class="item-card"><div><p class="eyebrow"><span class="tag">${item.weaponClass}</span><span class="tag ghost">${item.damageType}</span></p><h3>${item.name}</h3><p class="tags">${item.badges.map(tag => `<span>${tag}</span>`).join('')}<span>BURST DPS: ${dps.burst}</span><span>SUSTAINED DPS: ${dps.sustained}</span><span>ACCURACY: ${handling.accuracy}</span><span>STABILITY: ${handling.stability}</span></p></div><div class="gear-detail"><p><small>${item.facts[0]?.label ?? '—'}</small><b>${item.facts[0]?.value ?? '—'}</b><em>${item.facts[0]?.note ?? ''}</em></p><p class="tags">${item.facts.slice(1, 3).map(fact => `<span>${fact.label}: ${fact.value}</span>`).join('')}</p></div><div class="weapon-actions"><button class="add" data-item="${item.id}" data-target="Primary Weapon">Equip primary</button><button class="add" data-item="${item.id}" data-target="Secondary Weapon">Equip secondary</button></div></article>`;
+    const talentPools = getWeaponTalentPools(item);
+    return `<article class="item-card"><div><p class="eyebrow"><span class="tag">${item.weaponClass}</span><span class="tag ghost">${item.damageType}</span></p><h3>${item.name}</h3><p class="tags">${item.badges.map(tag => `<span>${tag}</span>`).join('')}<span>BURST DPS: ${dps.burst}</span><span>SUSTAINED DPS: ${dps.sustained}</span><span>ACCURACY: ${handling.accuracy}</span><span>STABILITY: ${handling.stability}</span></p></div><div class="gear-detail"><p><small>${item.facts[0]?.label ?? '—'}</small><b>${item.facts[0]?.value ?? '—'}</b><em>${item.facts[0]?.note ?? ''}</em></p><p class="tags">${item.facts.slice(1, 3).map(fact => `<span>${fact.label}: ${fact.value}</span>`).join('')}</p></div><div class="gear-detail"><p><small>COMPATIBLE TALENT POOL</small><b>${item.talents.length}</b><em>sourced options</em></p><p class="tags">${talentPools.map(pool => `<span>${pool.slot}: ${pool.talents.map(talent => talent.name).join(', ') || '—'}</span>`).join('')}</p></div><div class="weapon-actions"><button class="add" data-item="${item.id}" data-target="Primary Weapon">Equip primary</button><button class="add" data-item="${item.id}" data-target="Secondary Weapon">Equip secondary</button></div></article>`;
   }
   function talentCard(item) { return `<article class="item-card talent-card"><div><p class="eyebrow"><span class="tag">${item.slot}</span><span class="tag ghost">Talent</span></p><h3>${item.name}</h3><p class="talent-copy">${item.description || 'No primary description supplied.'}</p></div><div class="gear-detail"><p><small>ATTRIBUTE DETAILS</small><b>${item.attributes.length || 0}</b><em>tracked properties</em></p><p class="tags">${item.attributes.map(attribute => `<span>${attribute.label}: ${attribute.value}</span>`).join('') || '<span>No additional attributes</span>'}</p></div></article>`; }
   function brandCard(item) { return `<article class="item-card brand-card"><div><p class="eyebrow"><span class="tag">Brand Set</span><span class="tag ghost">Equipment</span></p><h3>${item.name}</h3><p class="talent-copy">Sourced equipment-set bonuses.</p></div><div class="gear-detail"><p><small>SET BONUSES</small><b>${item.bonuses.length}</b><em>piece thresholds</em></p><p class="tags">${item.bonuses.map(bonus => `<span>${bonus.label}: ${bonus.value}</span>`).join('')}</p></div></article>`; }
@@ -113,8 +135,8 @@ if (typeof document !== 'undefined') {
       const item = databaseCatalog.find(entry => entry.id === state.loadout[slot]);
       const target = $(`[data-slot="${slot}"]`);
       target.classList.toggle('filled', Boolean(item));
-      const detail = item ? (item.type === 'Gear' ? `${item.tier} · ${item.fact.label}: ${item.fact.value}` : item.type === 'Weapon' ? `${item.weaponClass} · ${item.facts[0]?.label}: ${item.facts[0]?.value}` : item.type === 'OS Protocol' ? `${item.core} · OS protocol` : item.type === 'Specialization' ? item.focusPaths : item.type) : `Choose a ${slot.toLowerCase()} from the database`;
-      const options = itemsForSlot(slot).map(option => `<option value="${option.id}" ${option.id === state.loadout[slot] ? 'selected' : ''}>${option.name}</option>`).join('');
+      const detail = item ? (item.type === 'Gear' ? `${item.tier} · ${item.fact.label}: ${item.fact.value}` : item.type === 'Weapon' ? `${item.weaponClass} · ${item.facts[0]?.label}: ${item.facts[0]?.value}` : item.type === 'Talent' ? item.description : item.type === 'OS Protocol' ? `${item.core} · OS protocol` : item.type === 'Specialization' ? item.focusPaths : item.type) : weaponTalentSlotConfig[slot] && !state.loadout[weaponTalentSlotConfig[slot].weaponSlot] ? `Equip ${weaponTalentSlotConfig[slot].weaponSlot.toLowerCase()} first` : `Choose a ${slot.toLowerCase()} from the database`;
+      const options = itemsForSlot(slot, state.loadout).map(option => `<option value="${option.id}" ${option.id === state.loadout[slot] ? 'selected' : ''}>${option.name}</option>`).join('');
       target.innerHTML = `<strong>${slot}</strong><span>${item?.name ?? 'Empty slot'}</span><small>${detail}</small><select class="slot-select" data-slot-select="${slot}"><option value="">Select from database…</option>${options}</select>`;
     }
     buildScore.textContent = `${summary.equipped.length}/${slots.length}`;
@@ -125,7 +147,12 @@ if (typeof document !== 'undefined') {
   $('#search').addEventListener('input', event => { state.query = event.target.value; renderDatabase(); });
   $('#filter-category').addEventListener('change', event => { state.category = event.target.value; renderSlotOptions(); renderDatabase(); });
   slotFilter.addEventListener('change', event => { state.slot = event.target.value; renderDatabase(); });
-  items.addEventListener('click', event => { const id = event.target.dataset.item, target = event.target.dataset.target; if (!id || !target) return; state.loadout[target] = id; renderBuild(); });
-  document.querySelector('.slots').addEventListener('change', event => { const slot = event.target.dataset.slotSelect; if (!slot) return; state.loadout[slot] = event.target.value; renderBuild(); });
+  function clearWeaponTalents(weaponSlot) {
+    for (const [talentSlot, config] of Object.entries(weaponTalentSlotConfig)) {
+      if (config.weaponSlot === weaponSlot) state.loadout[talentSlot] = '';
+    }
+  }
+  items.addEventListener('click', event => { const id = event.target.dataset.item, target = event.target.dataset.target; if (!id || !target) return; if (target === 'Primary Weapon' || target === 'Secondary Weapon') clearWeaponTalents(target); state.loadout[target] = id; renderBuild(); });
+  document.querySelector('.slots').addEventListener('change', event => { const slot = event.target.dataset.slotSelect; if (!slot) return; if (slot === 'Primary Weapon' || slot === 'Secondary Weapon') clearWeaponTalents(slot); state.loadout[slot] = event.target.value; renderBuild(); });
   renderSlotOptions(); renderDatabase(); renderBuild();
 }
