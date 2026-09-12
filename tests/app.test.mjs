@@ -66,12 +66,12 @@ test('weapon handling reads sourced accuracy and stability meters', () => {
 });
 
 test('databaseCatalog combines all imported categories, with category filters', () => {
-  assert.equal(databaseCatalog.length, 354);
+  assert.equal(databaseCatalog.length, 403);
   assert.equal(filterItems(databaseCatalog, { category: 'Specializations' }).length, 3);
   assert.equal(filterItems(databaseCatalog, { category: 'Weapons' }).length, 90);
   assert.equal(filterItems(databaseCatalog, { category: 'Talents' }).length, 120);
   assert.equal(filterItems(databaseCatalog, { category: 'Brands' }).length, 16);
-  assert.equal(filterItems(databaseCatalog, { category: 'OS Protocols' }).length, 17);
+  assert.equal(filterItems(databaseCatalog, { category: 'OS Protocols' }).length, 66);
   assert.equal(filterItems(databaseCatalog, { category: 'Skill Chips' }).length, 36);
 });
 
@@ -90,11 +90,16 @@ test('authorized SHD brand import preserves all 16 brand-set bonuses', () => {
   assert.match(boom.bonuses[0].value, /Skill Cooldown Recovery/);
 });
 
-test('authorized SHD OS protocol import preserves all 17 records', () => {
-  assert.equal(protocolCatalog.length, 17);
-  const collateral = protocolCatalog.find(item => item.name === 'Collateral Damage');
-  assert.equal(collateral.core, 'Engineering');
-  assert.match(collateral.description, /3000% Engineering/);
+test('Resurgence Builds OS protocol import preserves all 66 unique source records and full stats', () => {
+  assert.equal(protocolCatalog.length, 66);
+  assert.equal(new Set(protocolCatalog.map(item => item.id)).size, 66);
+  assert.deepEqual(protocolCatalog.reduce((counts, item) => ({ ...counts, [item.core]: (counts[item.core] ?? 0) + 1 }), {}), { Engineering: 28, Firepower: 25, Toughness: 13 });
+  const explosiveCharge = protocolCatalog.find(item => item.name === 'Explosive Charge');
+  assert.deepEqual(explosiveCharge.mainStat, { label: 'Engineering', value: '+22.50%' });
+  assert.equal(explosiveCharge.cooldown, '5 seconds');
+  assert.deepEqual(explosiveCharge.attributes, [{ label: 'Engineering', value: '+97' }, { label: 'Skill Damage', value: '+77' }, { label: 'Health', value: '+2,554' }]);
+  assert.match(explosiveCharge.talent, /1600% Engineering/);
+  assert.equal(explosiveCharge.source, 'https://resurgencebuilds.com/database/os-protocols/');
 });
 
 test('authorized SHD skill-chip import preserves all 36 records', () => {
@@ -107,7 +112,7 @@ test('authorized SHD skill-chip import preserves all 36 records', () => {
 
 test('builder slot options come from imported database catalogs', () => {
   assert.equal(itemsForSlot('Specialization').length, 3);
-  assert.equal(itemsForSlot('OS Protocol').length, 17);
+  assert.equal(itemsForSlot('OS Protocol').length, 66);
   assert.equal(itemsForSlot('Primary Weapon').length, 90);
   assert.ok(itemsForSlot('Backpack').every(item => item.slot === 'Backpack'));
 });
