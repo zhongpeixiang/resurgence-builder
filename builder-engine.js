@@ -26,11 +26,11 @@ const GAME = {
 
 /* ---------- Spec icons (WebP from our verified assets) ---------- */
 const SPEC_ICONS = {
-  'Demolitionist': '<img src="/images/ui/specializations/demolitionist.webp" alt="Demolitionist specialization" class="sigil" width="32" height="32">',
-  'Tech Operator': '<img src="/images/ui/specializations/tech-operator.webp" alt="Tech Operator specialization" class="sigil" width="32" height="32">',
-  'Bulwark':       '<img src="/images/ui/specializations/bulwark.webp" alt="Bulwark specialization" class="sigil" width="32" height="32">',
-  'Vanguard':      '<img src="/images/ui/specializations/vanguard.webp" alt="Vanguard specialization" class="sigil" width="32" height="32">',
-  'Field Medic':   '<img src="/images/ui/specializations/field-medic.webp" alt="Field Medic specialization" class="sigil" width="32" height="32">',
+  'Demolitionist': '<img src="https://resurgencebuilds.com/images/ui/specializations/demolitionist.webp" alt="Demolitionist specialization" class="sigil" width="32" height="32">',
+  'Tech Operator': '<img src="https://resurgencebuilds.com/images/ui/specializations/tech-operator.webp" alt="Tech Operator specialization" class="sigil" width="32" height="32">',
+  'Bulwark':       '<img src="https://resurgencebuilds.com/images/ui/specializations/bulwark.webp" alt="Bulwark specialization" class="sigil" width="32" height="32">',
+  'Vanguard':      '<img src="https://resurgencebuilds.com/images/ui/specializations/vanguard.webp" alt="Vanguard specialization" class="sigil" width="32" height="32">',
+  'Field Medic':   '<img src="https://resurgencebuilds.com/images/ui/specializations/field-medic.webp" alt="Field Medic specialization" class="sigil" width="32" height="32">',
 };
 
 /* ---------- Attribute category mapping ---------- */
@@ -824,6 +824,7 @@ function openGearPicker(slot) {
     g => ({ id: g.id, name: g.name, type: `${g.slot} · ${g.tier}`, desc: `${g.fact.label}: ${g.fact.value} · ${g.brands.join(', ')}` }),
     id => {
       S.gear[slot].set = id;
+      S.gear[slot].talent = '';
       // Now pick attribute 1
       openAttrPicker(slot, 1);
     },
@@ -851,10 +852,13 @@ function openAttrPicker(slot, num) {
     S.gear[slot]['b' + num]);
 }
 function openTalentPicker(slot, isBody) {
-  const pool = isBody ? GAME.bodyArmorTalents : GAME.backpackTalents;
+  const selectedGear = gearItem(S.gear[slot].set);
+  if (!selectedGear) { toast(`SELECT ${isBody ? 'BODY ARMOR' : 'BACKPACK'} FIRST`); return; }
+  const pool = (isBody ? GAME.bodyArmorTalents : GAME.backpackTalents)
+    .filter(talent => selectedGear.talents.includes(talent.name));
   openModal((isBody ? 'BODY' : 'BACKPACK') + ' TALENT',
     pool,
-    t => ({ id: t.name, name: t.name, type: 'Talent', desc: t.description }),
+    t => ({ id: t.name, name: t.name, type: selectedGear.name, desc: t.description }),
     name => { S.gear[slot].talent = name; afterChange(); },
     S.gear[slot].talent);
 }
@@ -873,6 +877,8 @@ function openWeaponPicker(k) {
         toast('EXOTIC RESTRICTION: Only 1 exotic weapon permitted. Other slot cleared.');
       }
       S['w' + k].id = id;
+      S['w' + k].t1 = '';
+      S['w' + k].t2 = '';
       afterChange($(`.slot[data-wslot="${k}"]`));
     },
     S['w' + k].id);
