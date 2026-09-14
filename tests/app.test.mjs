@@ -146,7 +146,7 @@ test('authorized SHD specializations import preserves all three source records',
 test('createBuildIssueUrl serializes an equipped build into a GitHub Issue draft', () => {
   const url = new URL(createBuildIssueUrl([{ name: 'Warlord', type: 'Weapon' }, { name: 'Demeter Quick-Stash', type: 'Gear' }]));
   assert.equal(url.origin, 'https://github.com');
-  assert.match(url.searchParams.get('title'), /Fieldkit build/);
+  assert.match(url.searchParams.get('title'), /Resurgence build/);
   assert.match(url.searchParams.get('body'), /Warlord/);
   assert.match(url.searchParams.get('labels'), /build/);
 });
