@@ -1,4 +1,4 @@
-// Generated from Resurgence Builds Skill Mod Combos. Do not edit by hand.
+// Generated from Resurgence Builds Skill Mod Combos with Season 2 Phase 1 patch overrides. Do not edit by hand.
 export const skillChipCatalog = [
   {
     "id": "1fb0f37a-a6ca-4de4-a74c-40edaf87d93f",
@@ -107,7 +107,7 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "Every shot during the first 6 seconds of Tactical Link grants 29% chance of recovering 1 ammo. Duration resets at each kill."
+        "value": "Every shot during the first 6 seconds of Tactical Link grants 18% chance of recovering 4 ammo. Duration resets at each kill."
       }
     ],
     "description": "",

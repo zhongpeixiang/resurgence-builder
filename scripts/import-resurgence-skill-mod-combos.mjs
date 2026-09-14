@@ -1,9 +1,22 @@
 import fs from 'node:fs';
 import { skillChipCatalog } from '../data/skill-chips.js';
 
-const sourcePath = process.argv[2];
-if (!sourcePath) throw new Error('Usage: node scripts/import-resurgence-skill-mod-combos.mjs <source-html>');
+const [sourcePath, patchNotesPath] = process.argv.slice(2);
+if (!sourcePath || !patchNotesPath) throw new Error('Usage: node scripts/import-resurgence-skill-mod-combos.mjs <source-html> <season-2-patch-notes.json>');
 const source = fs.readFileSync(sourcePath, 'utf8');
+const patchNotes = JSON.parse(fs.readFileSync(patchNotesPath, 'utf8'));
+const patchText = Object.values(patchNotes.query?.pages ?? {})
+  .flatMap(page => page.revisions ?? [])
+  .map(revision => revision.slots?.main?.['*'] ?? '')
+  .join('\n');
+const ammoRefillPatch = 'Decreased chance to trigger from 72% to 18%.\n** Increased amount of bullets given back from 1 to 4.';
+if (!patchText.includes('Skill Mod Combo Set "Field Repair"') || !patchText.includes('Weapon Damage was given instead of Fire Rate') || !patchText.includes(ammoRefillPatch)) {
+  throw new Error('Season 2 Phase 1 patch notes did not contain the expected skill-mod updates.');
+}
+const seasonTwoOverrides = new Map([[
+  'Ammo Refill',
+  'Every shot during the first 6 seconds of Tactical Link grants 18% chance of recovering 4 ammo. Duration resets at each kill.'
+]]);
 const decodeHtml = value => value
   .replace(/<[^>]+>/g, '')
   .replaceAll('&amp;', '&')
@@ -37,7 +50,7 @@ const records = skillChipCatalog.map(item => {
     ? { ...fact, value: combo.twoPieceBonus }
     : fact);
   const lines = item.lines.map(line => line.label === '3-PIECE TALENT'
-    ? { ...line, value: combo.threePieceBonus }
+    ? { ...line, value: seasonTwoOverrides.get(combo.name) ?? combo.threePieceBonus }
     : line);
   return {
     ...item,
@@ -55,5 +68,5 @@ if (records.some(item => item.lines.find(line => line.label === '3-PIECE TALENT'
   throw new Error('Every skill chip must have a sourced 3-piece bonus.');
 }
 
-fs.writeFileSync('data/skill-chips.js', `// Generated from Resurgence Builds Skill Mod Combos. Do not edit by hand.\nexport const skillChipCatalog = ${JSON.stringify(records, null, 2)};\n`);
-console.log(`Updated ${records.length} skill chips from ${cards.length} Resurgence Builds combos.`);
+fs.writeFileSync('data/skill-chips.js', `// Generated from Resurgence Builds Skill Mod Combos with Season 2 Phase 1 patch overrides. Do not edit by hand.\nexport const skillChipCatalog = ${JSON.stringify(records, null, 2)};\n`);
+console.log(`Updated ${records.length} skill chips from ${cards.length} Resurgence Builds combos and Season 2 Phase 1 patch notes.`);

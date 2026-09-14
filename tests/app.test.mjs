@@ -109,6 +109,10 @@ test('Resurgence Builds skill-mod combo import preserves sourced 2- and 3-piece 
   assert.match(adaptive.facts[0].value, /Phalanx Shield/);
   assert.equal(adaptive.facts.find(fact => fact.label === '2-PIECE BONUS').value, 'Skill Health+[4.0%~8.0%]');
   assert.match(adaptive.lines.find(line => line.label === '3-PIECE TALENT').value, /Weapon Critical Hit Damage/);
+  const ammoRefill = skillChipCatalog.find(item => item.name === 'Ammo Refill');
+  assert.match(ammoRefill.lines.find(line => line.label === '3-PIECE TALENT').value, /18% chance of recovering 4 ammo/);
+  const fieldRepairs = skillChipCatalog.find(item => item.name === 'Field Repairs');
+  assert.match(fieldRepairs.lines.find(line => line.label === '3-PIECE TALENT').value, /\+4% Rate of Fire/);
   assert.ok(skillChipCatalog.every(item => item.lines.find(line => line.label === '3-PIECE TALENT')?.value !== 'NOT CONFIGURED'));
   assert.ok(skillChipCatalog.every(item => item.source === 'https://resurgencebuilds.com/database/skill-mod-combos/'));
 });
