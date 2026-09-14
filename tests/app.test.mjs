@@ -7,6 +7,7 @@ import { brandCatalog } from '../data/brands.js';
 import { protocolCatalog } from '../data/os-protocols.js';
 import { skillChipCatalog } from '../data/skill-chips.js';
 import { specializationCatalog } from '../data/specializations.js';
+import { DATA as builderData } from '../builder-data.js';
 
 test('authorized SHD gear import preserves all 72 unique records', () => {
   assert.equal(catalog.length, 72);
@@ -149,4 +150,15 @@ test('createBuildIssueUrl serializes an equipped build into a GitHub Issue draft
   assert.match(url.searchParams.get('title'), /Resurgence build/);
   assert.match(url.searchParams.get('body'), /Warlord/);
   assert.match(url.searchParams.get('labels'), /build/);
+});
+
+test('full Build Lab adapter derives every picker source from the local catalog', () => {
+  assert.equal(builderData.gear.length, 72);
+  assert.equal(builderData.gearSets.length, 16);
+  assert.equal(builderData.standardWeapons.length + builderData.exoticWeapons.length, 90);
+  assert.equal(builderData.osProtocols.length, 66);
+  assert.equal(builderData.skillModCombos.length, 36);
+  assert.deepEqual(Object.keys(builderData.specSubclasses).sort(), ['Bulwark', 'Field Medic', 'Vanguard']);
+  assert.ok(builderData.gear.every(item => item.slot && item.brands.length));
+  assert.ok(builderData.standardWeapons.every(item => item.talents.length));
 });

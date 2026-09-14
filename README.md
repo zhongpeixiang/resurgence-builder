@@ -7,7 +7,7 @@ A static, source-backed equipment database and a separate **SHD Build Lab** for 
 - `index.html` — preserved local equipment database with search and category filters.
 - `builder.html` — a Build Lab styled after [Resurgence Builds’ public builder](https://resurgencebuilds.com/builder/), powered only by this project’s local catalog modules.
 
-The database links directly to the builder via an `Equip in Build Lab` action. The Build Lab supports specialization, OS Protocol, six gear slots, two weapons, source-compatible weapon talents, persistent URL build links, local-source diagnostics, and detected brand-set bonuses.
+The database links directly to the builder via an `Equip in Build Lab` action. The Build Lab mirrors the full SHD terminal structure: agent specialization/focus, six-slot gear rig, primary and secondary weapons, source-compatible weapon talents, OS Protocol, three skill mods, build overview, ISAC analysis, stats telemetry, active set bonuses, build card, reset, and URL-shareable state. Every picker is supplied from this project’s local catalog modules.
 
 ## Data provenance
 
