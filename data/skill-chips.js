@@ -1,4 +1,4 @@
-// Generated from an authorized SHD.build Skill Chips-page source. Do not edit by hand.
+// Generated from Resurgence Builds Skill Mod Combos. Do not edit by hand.
 export const skillChipCatalog = [
   {
     "id": "1fb0f37a-a6ca-4de4-a74c-40edaf87d93f",
@@ -17,7 +17,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Health Percent · 4%–8%"
+        "value": "Skill Health+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -31,12 +31,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Grants +9.60% Weapon Critical Hit Damage when Shield Health is above 50%. Grants +4.80% Shield Damage Reduction when Shield Health is below 50%."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "d62524e6-4d14-40a0-9905-ba0decbd6add",
@@ -55,7 +55,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Damage Reduction Percent · 2%–4%"
+        "value": "Damage Reduction+[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -69,12 +69,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "While behind a Smart Cover, kills or assists grant 10 Signature Ability Charge(s). This effect also applies to allies."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "7dc536c0-d661-4cb8-b9d5-42a36769598b",
@@ -93,7 +93,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Reload Speed · 4%–8%"
+        "value": "Reload Speed+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -107,12 +107,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Every shot during the first 6 seconds of Tactical Link grants 29% chance of recovering 1 ammo. Duration resets at each kill."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "e1c81130-2a0d-46e8-96a8-44fdef407ebc",
@@ -131,7 +131,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Weapon Damage · 2%–4%"
+        "value": "Weapon Damage+[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -145,12 +145,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Breach Combo hits restore Shield Health and Health equal to 4.20% Max Health."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "37a5a6b5-753f-428a-a049-9c2ce4e9df5c",
@@ -169,7 +169,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Armor Percent · 4.7%–9.3%"
+        "value": "Armor+[4.7%~9.3%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -183,12 +183,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "While behind a Smart Cover, weapon hits have a 5% chance of granting +2% Weapon Critical Hit Chance for 20 seconds, up to 3 stacks."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "b89e865c-ab8e-4737-903f-48fac3048418",
@@ -207,7 +207,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Weapon Damage · 2%–4%"
+        "value": "Weapon Damage+[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -221,12 +221,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Shockwave Spike Mk.3 hits grant +1.20% Damage Reduction, up to 5 stacks, but nearby enemies focus the Agent in priority."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "2e9648ed-1cc6-426b-a943-c7f550447348",
@@ -245,7 +245,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Weapon Damage · 2%–4%"
+        "value": "Weapon Damage+[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -259,12 +259,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "During Breach Combo, grants +100% Weapon Critical Hit Chance if there are at least 1 enemie within 20 meters."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "f1a13f3a-b2ac-4b44-ae63-8b30ade2f02f",
@@ -283,7 +283,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Damage Reduction Percent · 2%–4%"
+        "value": "Damage Reduction+[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -297,12 +297,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "Bugle Call"
+        "value": "Deploying Tactical Link grants +14.40% Rate of Fire, Damage Reduction, and Movement Speed for 15 seconds."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "9b7f64f1-c3c0-4f9f-84f0-e65c966f5d3a",
@@ -321,7 +321,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Duration · 3.2%–6.4%"
+        "value": "Skill Duration+[3.2%~6.4%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -335,12 +335,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Grants +14% Armor while located within 10 meters of the Shockwave Spike Mk.3."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "ad6bece7-bb22-458b-8a25-cd0727187bbe",
@@ -359,7 +359,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Armor Percent · 4.7%–9.3%"
+        "value": "Armor+[4.7%~9.3%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -373,12 +373,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "Commando"
+        "value": "When having the Tactical Link effect on self, every time you participate in killing an enemy, your weapon's Critical Hit Chance will be increased by 10.20% for 10 seconds."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "426e98fe-0c29-44be-9515-349c20ad1ea7",
@@ -397,7 +397,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Cooldown Recovery · 2%–4%"
+        "value": "Skill Cooldown Recovery-[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -411,12 +411,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Deploying Scanning Pulse while Fortified reduces the Skill Cooldown by 1.50 seconds."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "4f80e023-e54f-467a-8d68-13b47a8bdaf5",
@@ -435,7 +435,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Cooldown Recovery · 2%–4%"
+        "value": "Skill Cooldown Recovery-[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -449,12 +449,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "While behind a Smart Cover, grants +1% Damage, up to 3 stacks. Reaching maximum stacks grants +3% Signature Ability Charge Efficiency. This bonus resets upon leaving the Smart Cover."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "ba5fef49-a8ee-4f49-a763-a03ea62a61f9",
@@ -473,7 +473,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Max Health · 4%–8%"
+        "value": "Max Health+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -487,12 +487,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "While behind a Smart Cover, kills or assists grant allies Extra Health equal to 120% Engineering for 10 seconds."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "b2ae23f6-9c05-47ba-8134-bd14e55971a3",
@@ -511,7 +511,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Health Percent · 4%–8%"
+        "value": "Skill Health+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -525,12 +525,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Deploying the Phalanx Shield grants +4% Rate of Fire. Hits restore 0.60% Shield Health. Talent Cooldown: 1 second."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "6cdd2d2a-b160-4644-bd93-b24fbfaeb230",
@@ -549,7 +549,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Reload Speed · 4%–8%"
+        "value": "Reload Speed+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -563,12 +563,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Killing or assisting in killing the enemy scanned by you, restoring your Health by 6% of Health lost, and refilling the Magazine by 6.40%."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "4e5fcef0-80ee-46d6-bd19-bd2616d1a862",
@@ -587,7 +587,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Max Health · 4%–8%"
+        "value": "Max Health+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -601,12 +601,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Breach Combo hits deal additional damage equal to 10% Max Health."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "bc4ee51f-d57e-4828-b9d4-702e7619bb89",
@@ -625,7 +625,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Weapon Damage · 2%–4%"
+        "value": "Weapon Damage+[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -639,12 +639,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Grants +12% Toughness while the Phalanx Shield is deployed."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "62711df7-916c-4766-911d-6b6297e84224",
@@ -663,7 +663,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Weapon Damage · 2%–4%"
+        "value": "Weapon Damage+[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -677,12 +677,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Shockwave Spike Mk.3 hits grant +4% Weapon Critical Hit Chance for 10 seconds, up to 4 stacks."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "b7550cbb-5737-4304-a604-bdf8ed7de42b",
@@ -701,7 +701,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Health Percent · 4%–8%"
+        "value": "Skill Health+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -715,12 +715,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Reaching 10% Phalanx Shield Health restores 15% Max Shield Health. Talent Cooldown: 30 seconds."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "35623520-1b06-4b72-86ac-384389105ef6",
@@ -739,7 +739,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Cooldown Recovery · 2%–4%"
+        "value": "Skill Cooldown Recovery-[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -753,12 +753,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "While using Tactical Link, hits have a 10% chance of reducing Skill Cooldown by 0.80 seconds. Talent Cooldown: 5 seconds."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "40e77b4d-ce69-4b57-be22-925a08cd84f2",
@@ -777,7 +777,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Armor Percent · 4.7%–9.3%"
+        "value": "Armor+[4.7%~9.3%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -791,12 +791,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Each enemy scanned within 70 meter increases Weapon Critical Hit Chance by 1.40%, up to 8 times."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "448aeaa9-ee0e-4fb7-92bf-81a4e1b60367",
@@ -815,7 +815,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Health Percent · 4%–8%"
+        "value": "Skill Health+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -829,12 +829,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Deploying the Breach Combo grants +12% Rate of Fire. Hits on enemies within 10 meters restore 1 bullet (capped at 3 bullets). Talent Cooldown: 1 second."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "6b40520a-5533-4e0f-b72c-e9d5fbd307ec",
@@ -853,7 +853,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Reload Speed · 4%–8%"
+        "value": "Reload Speed+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -867,12 +867,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "While behind a Smart Cover, grants +3.20% Damage Reduction and hits have a 4.80% chance of restoring 1 bullet."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "bba3c277-423b-4384-931d-8f31cf80fc78",
@@ -891,7 +891,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Max Health · 4%–8%"
+        "value": "Max Health+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -905,12 +905,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Shockwave Spike Mk.3 hits grant +1.60% Weapon Damage for 5 seconds, up to 5 stacks."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "863c5628-a32a-43e3-95bc-5dbcfa4a57c1",
@@ -929,7 +929,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Max Health · 4%–8%"
+        "value": "Max Health+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -943,16 +943,16 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Within 6 seconds of deploying the Breach Combo, hits have a 40% chance of restoring 1 bullet. Critical Hits increase duration to 0.50 seconds (capped at 2 seconds)."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "741b977b-950c-4d4d-a7de-953b9852d25c",
-    "name": "Provacateur",
+    "name": "Provocateur",
     "type": "Skill Chip",
     "kicker": "SKILL CHIP SET // 2–3 PIECES",
     "iconUrl": "/icons/game-data/skill_chip/741b977b-950c-4d4d-a7de-953b9852d25c?v=2026-08-02T22%3A37%3A13.052Z",
@@ -967,7 +967,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Weapon Damage · 2%–4%"
+        "value": "Weapon Damage+[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -981,12 +981,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Enemies within 20 meters focus the Agent in priority when deploying the Phalanx Shield. Grants +3.20% Damage Reduction for 10 seconds for each enemy who is targeting the Agent, up to 5 stacks. Talent Cooldown: 20 seconds."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "87bf6b25-5cb0-44a4-a7d7-540816eabbbc",
@@ -1005,7 +1005,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Signature Ability Charge Efficiency · 4%–8%"
+        "value": "Signature Ability Charge Efficiency+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -1019,12 +1019,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Pulsed enemies grant +8 Signature Ability Charge(s) to the ally team."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "b8add9a6-9e67-40ab-bc2f-84835bda3d6b",
@@ -1043,7 +1043,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Rate of Fire · 4%–8%"
+        "value": "Rate of Fire+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -1057,12 +1057,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Grants Extra Shield Health equal to 9.20% Max Health."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "900d6bac-4f74-4c86-90f6-d2ef6eb88038",
@@ -1081,7 +1081,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Max Health · 4%–8%"
+        "value": "Max Health+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -1095,12 +1095,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "When Health is below 50%, Shockwave Spike Mk.3 hits restore Health equal to 0.80% Max Health. When Health is above 50%, Shockwave Spike Mk.3 hits grant +12% Weapon Critical Hit Damage."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "70967f50-1351-4cb6-80f6-c6f43046b74f",
@@ -1119,7 +1119,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Duration · 3.2%–6.4%"
+        "value": "Skill Duration+[3.2%~6.4%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -1133,12 +1133,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Shockwave Spike Mk.3 hits grant +0.80% Max Health for 20 seconds, up to 5 stacks. Shockwave Spike Mk.3 deals additional damage equal to 0.60% Max Health."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "0bf0ba19-5c0c-49ff-b679-c0f7f6a75cc1",
@@ -1157,7 +1157,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Cooldown Recovery · 2%–4%"
+        "value": "Skill Cooldown Recovery-[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -1171,12 +1171,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "When releasing the Scanning Pulse, gain an additional 160 Signature Ability Charge. If there are more than 3 enemies within 70 meters, gain an increased charge of 200."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "b4301a41-800a-4590-a19c-bd2bc171e797",
@@ -1195,7 +1195,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Cooldown Recovery · 2%–4%"
+        "value": "Skill Cooldown Recovery-[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -1209,12 +1209,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "While Tactical Link is active, hitting enemies has a 10% chance to extend its duration by 0.30s. This effect can stack up to 8 times and start a 15s cooldown when reaches the maximun stacks."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "112bdd90-5ce7-4945-8506-8d7b469a5430",
@@ -1233,7 +1233,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Damage Reduction Percent · 2%–4%"
+        "value": "Damage Reduction+[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -1247,12 +1247,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Deploying Tactical Link grants +28.80% Signature Ability Charge Efficiency."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "76f07cb9-c612-495c-8431-7c80e4b429ce",
@@ -1271,7 +1271,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Damage Reduction Percent · 2%–4%"
+        "value": "Damage Reduction+[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -1285,12 +1285,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Deploying Scanning Pulse grants Pulsed allies Weapon Critical Hit Chance equal to 3.60% Engineering for 10 seconds."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "a5b2201f-7125-455c-a577-aecaaa119f50",
@@ -1309,7 +1309,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Cooldown Recovery · 2%–4%"
+        "value": "Skill Cooldown Recovery-[2.0%~4.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -1323,12 +1323,12 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "While behind a Smart Cover, grants +9.60% Signature Ability Charge Efficiency."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   },
   {
     "id": "fb0b2458-0d73-4f4b-931a-8c5573c4ad40",
@@ -1347,7 +1347,7 @@ export const skillChipCatalog = [
       },
       {
         "label": "2-PIECE BONUS",
-        "value": "Skill Health Percent · 4%–8%"
+        "value": "Skill Health+[4.0%~8.0%]"
       },
       {
         "label": "PRIMARY POOL",
@@ -1361,11 +1361,11 @@ export const skillChipCatalog = [
     "lines": [
       {
         "label": "3-PIECE TALENT",
-        "value": "NOT CONFIGURED"
+        "value": "Breach Combo hits grant +33.80% Armor for 15 seconds, up to 5 stacks."
       }
     ],
     "description": "",
     "attributes": [],
-    "source": "SHD.build database/skill-chips page provided by authorized contributor"
+    "source": "https://resurgencebuilds.com/database/skill-mod-combos/"
   }
 ];

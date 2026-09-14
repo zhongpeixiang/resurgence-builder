@@ -102,12 +102,15 @@ test('Resurgence Builds OS protocol import preserves all 66 unique source record
   assert.equal(explosiveCharge.source, 'https://resurgencebuilds.com/database/os-protocols/');
 });
 
-test('authorized SHD skill-chip import preserves all 36 records', () => {
+test('Resurgence Builds skill-mod combo import preserves sourced 2- and 3-piece bonuses for all 36 builder records', () => {
   assert.equal(skillChipCatalog.length, 36);
+  assert.equal(new Set(skillChipCatalog.map(item => item.id)).size, 36);
   const adaptive = skillChipCatalog.find(item => item.name === 'Adaptive Armor');
   assert.match(adaptive.facts[0].value, /Phalanx Shield/);
-  assert.deepEqual(adaptive.badges, ['SUPERIOR', 'HIGH-END']);
-  assert.equal(adaptive.lines[0].label, '3-PIECE TALENT');
+  assert.equal(adaptive.facts.find(fact => fact.label === '2-PIECE BONUS').value, 'Skill Health+[4.0%~8.0%]');
+  assert.match(adaptive.lines.find(line => line.label === '3-PIECE TALENT').value, /Weapon Critical Hit Damage/);
+  assert.ok(skillChipCatalog.every(item => item.lines.find(line => line.label === '3-PIECE TALENT')?.value !== 'NOT CONFIGURED'));
+  assert.ok(skillChipCatalog.every(item => item.source === 'https://resurgencebuilds.com/database/skill-mod-combos/'));
 });
 
 test('builder slot options come from imported database catalogs', () => {
