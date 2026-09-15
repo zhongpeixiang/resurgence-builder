@@ -4,34 +4,34 @@
 
 /* ---------- TOKENS ---------- */
 :root{
-  /* surfaces — deep blue-black, not flat gray */
-  --bg-0:#05070b;
-  --bg-1:#080b11;
-  --panel:rgba(14,19,27,.88);
-  --panel-2:rgba(20,27,37,.92);
-  --panel-hi:rgba(28,37,49,.95);
-  --line:rgba(150,170,190,.12);
-  --line-2:rgba(150,170,190,.06);
-  --line-hot:rgba(255,138,46,.55);
+  /* Shared Resurgence Builds surface and color system */
+  --bg-0:#101211;
+  --bg-1:#131614;
+  --panel:rgba(23,26,24,.9);
+  --panel-2:rgba(28,32,29,.94);
+  --panel-hi:rgba(39,44,40,.96);
+  --line:rgba(233,231,223,.15);
+  --line-2:rgba(233,231,223,.07);
+  --line-hot:rgba(215,255,67,.58);
 
-  /* semantic system colors */
-  --orange:#ff8a2e;       /* active / system focus */
-  --orange-deep:#e8631a;
-  --amber:#ffc35e;        /* hover / scan */
-  --blue:#52a8ff;         /* toughness / defense */
-  --green:#52e08a;        /* validated synergy */
-  --red:#ff5347;          /* conflict / warning */
-  --purple:#b07bff;       /* engineering / skill */
-  --gold:#ffd84d;
+  /* The Lab keeps its tactical semantics inside the main-site palette. */
+  --orange:#d7ff43;
+  --orange-deep:#afdb22;
+  --amber:#f2aa52;
+  --blue:#8fc5ff;
+  --green:#8fe873;
+  --red:#ff746b;
+  --purple:#c49bff;
+  --gold:#f2cf67;
 
-  --text:#e9e4d8;
-  --text-2:#aab2bb;
-  --muted:#6a7682;
-  --dim:#46505a;
+  --text:#e9e7df;
+  --text-2:#b9beb8;
+  --muted:#8e938f;
+  --dim:#687068;
 
-  --font-display:'Rajdhani','Arial Narrow',sans-serif;
-  --font-body:'Inter',system-ui,sans-serif;
-  --font-mono:'JetBrains Mono',monospace;
+  --font-display:'Barlow Condensed',sans-serif;
+  --font-body:'Manrope',system-ui,sans-serif;
+  --font-mono:'DM Mono',monospace;
 
   --ease-out:cubic-bezier(.16,1,.3,1);
   --ease-in:cubic-bezier(.4,0,1,1);
@@ -745,4 +745,12 @@ body:has(.lab):after{content:'';position:fixed;inset:0;pointer-events:none;z-ind
 .rating{display:flex;align-items:baseline;justify-content:space-between;gap:10px}.rating b{font:700 44px/1 var(--font-display);color:var(--orange)}.rating span{font:11px var(--font-mono);color:var(--text-2);text-align:right}.rating-meter{height:5px;background:var(--line);margin:14px 0}.rating-meter i{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--orange),var(--amber));transition:width .25s}.analysis{font-size:13px;line-height:1.6;color:var(--text-2)}.diagnostics{display:flex;flex-direction:column;gap:8px;margin-top:14px}.diag{padding:9px;border-left:2px solid var(--blue);background:rgba(82,168,255,.06);font-size:12px;color:var(--text-2)}.diag.warn{border-color:var(--amber);background:rgba(255,195,94,.06)}.bonus{padding:10px;border:1px solid var(--line);margin-bottom:8px}.bonus b{display:block;font:600 16px var(--font-display);color:var(--green)}.bonus span{display:block;margin-top:4px;font:11px var(--font-mono);color:var(--text-2)}
 @media(max-width:1050px){.local-grid{grid-template-columns:1fr 1fr}.local-grid>.build-column{grid-column:1/-1;order:-1}}@media(max-width:650px){.lab-nav{gap:10px}.lab-nav nav{gap:0}.local-grid{grid-template-columns:1fr}.slot-grid{grid-template-columns:1fr}.panel--bar{flex-wrap:wrap}.build-name__input{min-width:100%}}
 
-.project-back{position:fixed;top:14px;right:18px;z-index:100;color:var(--text-2);font:11px var(--font-mono);text-decoration:none;border:1px solid var(--line);background:rgba(5,7,11,.8);padding:8px 10px}.project-back:hover{color:var(--orange);border-color:var(--orange)}
+.project-back{position:fixed;top:14px;right:18px;z-index:100;color:var(--text-2);font:11px var(--font-mono);text-decoration:none;border:1px solid var(--line);background:rgba(16,18,17,.8);padding:8px 10px}.project-back:hover{color:var(--orange);border-color:var(--orange)}
+
+/* Main-site navigation and palette for the standalone Build Lab. */
+.builder-topbar{height:72px;border-bottom:1px solid var(--line);padding:0 clamp(20px,5vw,80px);display:flex;align-items:center;gap:34px;background:rgba(16,18,17,.92);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100}
+.builder-topbar__brand{font:700 28px/1 var(--font-display);letter-spacing:.06em;color:var(--text);text-decoration:none}.builder-topbar__brand span{color:var(--orange)}
+.builder-topbar nav{display:flex;gap:24px}.builder-topbar nav a{font:500 12px var(--font-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-decoration:none}.builder-topbar nav a:hover,.builder-topbar nav a.active{color:var(--orange)}
+.builder-topbar__cta{margin-left:auto;display:inline-flex;align-items:center;gap:18px;background:var(--orange);color:#121410;text-decoration:none;padding:12px 15px;font:600 12px var(--font-mono);letter-spacing:.07em;text-transform:uppercase}.builder-topbar__cta b{font-size:16px}.builder-topbar__cta:hover{background:var(--amber)}
+body:has(.lab){background-color:var(--bg-0);background-image:radial-gradient(1200px 600px at 80% -10%,rgba(215,255,67,.08),transparent 60%),radial-gradient(900px 500px at -10% 20%,rgba(242,170,82,.05),transparent 55%),linear-gradient(rgba(233,231,223,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(233,231,223,.035) 1px,transparent 1px)}
+@media(max-width:650px){.builder-topbar{height:60px;padding:0 16px;gap:16px}.builder-topbar__brand{font-size:23px}.builder-topbar nav{gap:14px}.builder-topbar__cta{display:none}}
