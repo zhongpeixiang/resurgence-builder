@@ -19,6 +19,10 @@ The builder imports the same committed modules as the database:
 
 No separate copied builder data payload is used.
 
+### Offline client research (not runtime stats)
+
+[`data/research/`](data/research/README.md) preserves a versioned `1.66724.0` client-research dataset: 1,337 native schema identifiers across 68 types and five curated mechanics-related UI descriptions, with hashes, binary offsets and explicit uncertainty labels. Enum IDs are **not balance values**; cooked UI defaults are **not verified current rules**. This dataset is intentionally separate from all database catalogs and builder calculations. See its README for coverage limits and the repeatable import command.
+
 ## Run locally
 
 ```bash
