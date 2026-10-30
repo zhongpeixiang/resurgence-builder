@@ -1,0 +1,19 @@
+.mechanics-guide-mount{max-width:1440px;margin:0 auto;padding:0 24px}
+.mechanics-guide{margin:40px 0;scroll-margin-top:110px;border:1px solid #353a35;background:#171a18;color:#e9e7df;padding:28px;font-family:'Manrope',sans-serif}
+.mechanics-guide__header{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.mechanics-guide__eyebrow{margin:0 0 8px;color:#d7ff43;font:500 11px 'DM Mono',monospace;letter-spacing:.12em}
+.mechanics-guide h2{margin:0;font:600 clamp(28px,3vw,38px)/1.15 'Barlow Condensed',sans-serif;text-transform:uppercase}
+.mechanics-guide__badge{flex-shrink:0;border:1px solid #65773c;color:#d7ff43;padding:6px 10px;font:500 10px 'DM Mono',monospace;letter-spacing:.06em;text-transform:uppercase}
+.mechanics-guide__intro{max-width:850px;margin:18px 0 24px;color:#bbc0b8;font-size:13px;line-height:1.65}
+.mechanics-guide__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.mechanics-guide__card{min-width:0;border:1px solid #353a35;border-top:2px solid #d7ff43;padding:20px;background:#101211;display:flex;flex-direction:column}
+.mechanics-guide h3{margin:0 0 12px;font-size:16px;line-height:1.45;font-weight:700;color:#e9e7df}
+.mechanics-guide__card>p{margin:0 0 20px;color:#c0c5bd;font-size:13px;line-height:1.75}
+.mechanics-guide details{margin-top:auto;border-top:1px solid #353a35;padding-top:12px}
+.mechanics-guide summary{cursor:pointer;min-height:32px;color:#d7ff43;font-size:12px;line-height:1.6}
+.mechanics-guide__meta{color:#aeb5ac;font-size:11px;line-height:1.75;margin:12px 0}
+.mechanics-guide ul{margin:0;padding-left:16px}.mechanics-guide li{margin:10px 0;font-size:11px;line-height:1.7;overflow-wrap:anywhere}
+.mechanics-guide a{color:#d7ff43;text-decoration:underline;text-underline-offset:3px}.mechanics-guide a:hover{color:#fff}
+.mechanics-guide :focus-visible{outline:2px solid #f2aa52;outline-offset:4px}
+@media(max-width:800px){.mechanics-guide__grid{grid-template-columns:1fr}.mechanics-guide{padding:20px}.mechanics-guide__header{align-items:flex-start;flex-direction:column;gap:12px}.mechanics-guide-mount{padding:0 16px}}
+@media(max-width:720px){.topbar,.builder-topbar{height:auto;min-height:64px;flex-wrap:wrap;gap:12px;padding-top:12px;padding-bottom:12px}.topbar nav,.builder-topbar nav{order:3;flex-basis:100%;justify-content:flex-start}.topbar .nav-cta,.builder-topbar__cta{display:none}.mechanics-guide{scroll-margin-top:140px}}
