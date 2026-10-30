@@ -45,6 +45,10 @@ All four PAK indexes were encrypted. The offline pass inventoried 93,419 physica
 
 This repository stores only the useful normalized research subset, not the original installer, full source dumps, raw binary fragments, credentials or native executables. Game content remains attributable to Ubisoft; importing this evidence does not establish a redistribution license for other game assets.
 
+### UI promotion after corroboration
+
+Three qualitative claims now have a separately curated UI dataset at `data/confirmed-mechanics.js`: weapon proficiency tasks/rewards, matching damage types to enemy armor weaknesses, and separate character/specialization XP tracks. They were cross-checked against Ubisoft publications and October 2026 community guides. Each UI card links its sources, dates historical evidence, and explicitly says it was not independently gameplay-tested. Only this narrow paraphrased guidance is displayed; the research JSON remains non-runtime. Crafting probabilities, blueprint-specific details, refresh timing, enum IDs and all numerical balance claims remain excluded from the UI and calculations.
+
 ## Reproduce the import
 
 With the original offline extraction directory available:

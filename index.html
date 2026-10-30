@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Division Resurgence equipment database.">
-  <title>Resurgence Builds — Database</title><link rel="stylesheet" href="styles.css">
+  <title>Resurgence Builds — Database</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="mechanics-guide.css">
 </head>
 <body>
-<header class="topbar"><a class="brand" href="index.html">RESURGENCE<span>BUILDS</span></a><nav><a class="active" href="index.html">Database</a><a href="builder.html">Build Lab</a></nav><a class="primary nav-cta" href="builder.html">Open builder <b>→</b></a></header>
+<header class="topbar"><a class="brand" href="index.html">RESURGENCE<span>BUILDS</span></a><nav><a class="active" href="index.html">Database</a><a href="builder.html">Build Lab</a><a href="#mechanics-guide">Mechanics</a></nav><a class="primary nav-cta" href="builder.html">Open builder <b>→</b></a></header>
 <main id="top">
   <section class="intro"><p class="kicker">DIVISION RESURGENCE // VERIFIED DATA</p><h1>Build intelligence.<br><em>One database.</em></h1><p class="lede">Browse the preserved equipment database, then configure a source-backed loadout in the SHD Build Lab.</p><a class="primary" href="#database">Browse database <b>↓</b></a></section>
   <section id="database" class="database panel"><div class="section-head"><div><p class="kicker">DATABASE</p><h2>Equipment index</h2></div><p id="result-count">0 records</p></div><div class="controls"><label><span class="sr-only">Search equipment</span><input id="search" type="search" placeholder="Search name, talent, brand, or stat"></label><label><span class="sr-only">Filter category</span><select id="filter-category"><option>Gear</option><option>Weapons</option><option>Talents</option><option>Brands</option><option>OS Protocols</option><option>Skill Chips</option><option>Specializations</option></select></label><label><span class="sr-only">Filter subgroup</span><select id="filter-slot"></select></label></div><div id="item-list" class="item-list"></div><p class="source-note">Gear (72), weapons (90), talents (120), brands (16), OS Protocols (66), Skill Chips (36), and specializations (3) are preserved in the local project database. <a href="builder.html">Open the Build Lab →</a></p></section>
-</main><footer>RESURGENCE BUILDS · SOURCE-BACKED DATABASE · <span>v0.4</span></footer><script type="module" src="database.js"></script>
+  <div data-mechanics-guide></div>
+</main><footer>RESURGENCE BUILDS · SOURCE-BACKED DATABASE · <span>v0.4</span></footer><script type="module" src="database.js"></script><script type="module" src="mechanics-guide.js"></script>
 </body></html>

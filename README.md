@@ -6,6 +6,7 @@ A static, source-backed equipment database and a separate **SHD Build Lab** for 
 
 - `index.html` — preserved local equipment database with search and category filters.
 - `builder.html` — a Build Lab styled after [Resurgence Builds’ public builder](https://resurgencebuilds.com/builder/), powered only by this project’s local catalog modules.
+- Both pages include a **Mechanics** section with three source-checked qualitative tips: weapon proficiency, armor weakness matching, and separate specialization XP. Expand each card for Ubisoft/community sources and verification limits; no unverified numerical values enter calculations.
 
 The database links directly to the builder via an `Equip in Build Lab` action. The Build Lab mirrors the full SHD terminal structure: agent specialization/focus, six-slot gear rig, primary and secondary weapons, source-compatible weapon talents, OS Protocol, three skill mods, build overview, ISAC analysis, stats telemetry, active set bonuses, build card, reset, and URL-shareable state. Every picker is supplied from this project’s local catalog modules.
 
